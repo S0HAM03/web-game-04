@@ -10,7 +10,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "install:server": "cd server && npm install"
+    "install:server": "cd server && npm install",
+    "install:all": "npm install && cd server && npm install"
   },
   "dependencies": {
     "lucide-react": "^1.24.0",

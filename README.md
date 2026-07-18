@@ -76,15 +76,17 @@ web-game-04/
 - Node.js 18+
 - npm
 
+### Why two separate `package.json` files?
+
+The Vite/React app lives at the **project root** (`src/`) and the Node.js game server lives in `server/`. They run in different environments (browser vs Node) and use different module systems (ES modules vs CommonJS), so they have separate dependency trees. A single `install:all` script handles both.
+
 ### Install
 
 ```bash
-# Install client dependencies
-npm install
-
-# Install server dependencies
-npm run install:server
+npm run install:all
 ```
+
+This installs dependencies for both the client (root) and the server (`server/`).
 
 ### Run (Development)
 
@@ -92,12 +94,21 @@ npm run install:server
 npm run dev
 ```
 
-This starts both the Vite dev server and the Node game server concurrently:
+Starts both services via `concurrently`:
 
 | Service | URL |
 |---|---|
 | Client (Vite) | http://localhost:5173 |
 | Server (Socket.io) | http://localhost:3001 |
+
+The Vite dev server automatically proxies `/socket.io` requests to port 3001, so you don't need to configure CORS or origins in development.
+
+### Run separately (optional)
+
+```bash
+npm run dev:client   # Vite only
+npm run dev:server   # Node server only
+```
 
 ---
 
