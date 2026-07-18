@@ -87,8 +87,9 @@ export function AnimatedCursor() {
 /* ═══════════════════════════════════════════
    CHUNKY BUTTON — same shape, dark bg
 ═══════════════════════════════════════════ */
-export function ChunkyButton({ children, color = "#333", onClick, disabled = false, style = {} }) {
+export function ChunkyButton({ children, color = "#4A9EFF", onClick, disabled = false, style = {} }) {
   const [active, setActive] = useState(false);
+  const isDark = color.startsWith('#1') || color === '#222' || color === '#333';
   return (
     <button
       onClick={onClick} disabled={disabled}
@@ -96,13 +97,13 @@ export function ChunkyButton({ children, color = "#333", onClick, disabled = fal
       onMouseUp={() => !disabled && setActive(false)}
       onMouseLeave={() => setActive(false)}
       style={{
-        background: disabled ? "#1a1a1a" : color,
-        border: "3px solid #333", borderRadius: "10px",
+        background: disabled ? "#222" : color,
+        border: "3px solid #fff", borderRadius: "10px",
         padding: "1rem 1.5rem", fontSize: "1rem", fontWeight: "900", fontFamily: "'Nunito', sans-serif",
         textTransform: "uppercase", letterSpacing: "2px",
-        color: disabled ? "#555" : "#ffffff",
+        color: disabled ? "#555" : (isDark ? "#fff" : "#000"),
         cursor: disabled ? "not-allowed" : "pointer",
-        boxShadow: active || disabled ? "0px 0px 0px #000" : "4px 4px 0px #000",
+        boxShadow: active || disabled ? "0px 0px 0px #fff" : "4px 4px 0px #fff",
         transform: active || disabled ? "translate(4px, 4px)" : "translate(0, 0)",
         transition: "transform 0.05s linear, box-shadow 0.05s linear",
         display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
@@ -125,9 +126,9 @@ export function ChunkyInput({ value, onChange, placeholder, maxLength, onKeyDown
       className="display-font"
       style={{
         width: "100%", textAlign: "center", fontSize: "1.8rem",
-        background: "#1a1a1a", border: "3px solid #333", borderRadius: "12px",
+        background: "#111", border: "3px solid #fff", borderRadius: "12px",
         padding: "1rem", color: "#fff", outline: "none",
-        boxShadow: "4px 4px 0px #000",
+        boxShadow: "4px 4px 0px #fff",
       }}
     />
   );
@@ -195,14 +196,14 @@ export function LandingView({ onHost, onJoin }) {
 
         <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: 700 }}>
           <div style={{ flex: '1 1 260px' }}>
-            <ChunkyButton color="#1a1a1a" onClick={onHost} style={{ flexDirection: 'column', padding: '2.5rem 1.5rem', gap: 14, border: '2px solid #333', width: '100%' }}>
-              <Gamepad2 size={36} color="#4A9EFF"/>
+            <ChunkyButton color="#4A9EFF" onClick={onHost} style={{ flexDirection: 'column', padding: '2.5rem 1.5rem', gap: 14, width: '100%' }}>
+              <Gamepad2 size={36} color="#000"/>
               <span className="display-font" style={{ fontSize: '1.5rem' }}>Host Game</span>
             </ChunkyButton>
           </div>
           <div style={{ flex: '1 1 260px' }}>
-            <ChunkyButton color="#1a1a1a" onClick={onJoin} style={{ flexDirection: 'column', padding: '2.5rem 1.5rem', gap: 14, border: '2px solid #333', width: '100%' }}>
-              <Users size={36} color="#51CF66"/>
+            <ChunkyButton color="#51CF66" onClick={onJoin} style={{ flexDirection: 'column', padding: '2.5rem 1.5rem', gap: 14, width: '100%' }}>
+              <Users size={36} color="#000"/>
               <span className="display-font" style={{ fontSize: '1.5rem' }}>Join Game</span>
             </ChunkyButton>
           </div>
@@ -263,12 +264,12 @@ export function LandingView({ onHost, onJoin }) {
       {/* ══ CTA ══ */}
       <div style={{ background: '#0d0d0d', padding: '5rem 2rem', textAlign: 'center' }}>
         <h2 className="display-font" style={{ fontSize: '2rem', color: '#fff', marginBottom: '2rem' }}>READY TO PLAY?</h2>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <ChunkyButton color="#1a1a1a" onClick={onHost} style={{ padding: '1.25rem 2.5rem', border: '2px solid #333' }}>
-            <Gamepad2 size={20} color="#4A9EFF"/> Host Game
+        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <ChunkyButton color="#4A9EFF" onClick={onHost} style={{ padding: '1.25rem 2.5rem' }}>
+            <Gamepad2 size={20} color="#000"/> Host Game
           </ChunkyButton>
-          <ChunkyButton color="#1a1a1a" onClick={onJoin} style={{ padding: '1.25rem 2.5rem', border: '2px solid #333' }}>
-            <Users size={20} color="#51CF66"/> Join Game
+          <ChunkyButton color="#51CF66" onClick={onJoin} style={{ padding: '1.25rem 2.5rem' }}>
+            <Users size={20} color="#000"/> Join Game
           </ChunkyButton>
         </div>
       </div>
@@ -291,7 +292,7 @@ export function HostSetupView({ onBack, onEnter }) {
 
   return (
     <div className="game-bg" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", padding: "2rem" }}>
-      <div><ChunkyButton color="#1a1a1a" onClick={onBack} style={{ display: "inline-flex", padding: "0.5rem 1rem", border: '1px solid #333' }}><ArrowLeft size={18}/> Back</ChunkyButton></div>
+      <div><ChunkyButton color="#1a1a1a" onClick={onBack} style={{ display: "inline-flex", padding: "0.5rem 1rem" }}><ArrowLeft size={18}/> Back</ChunkyButton></div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "-4rem" }}>
         <h2 className="display-font" style={{ fontSize: "2.5rem", marginBottom: "2rem", color: "#fff" }}>HOST A ROOM</h2>
@@ -299,13 +300,13 @@ export function HostSetupView({ onBack, onEnter }) {
         <div style={{ width: "320px", display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "2rem" }}>
           <div style={{ position: "relative" }}>
             <ChunkyInput value={name} onChange={(e) => setName(e.target.value.toUpperCase().slice(0, 12))} placeholder="YOUR NAME" maxLength={12}/>
-            <button onClick={() => setName(generateAIName().toUpperCase())} style={{ position: "absolute", right: -18, top: -18, background: "#1a1a1a", border: "2px solid #333", borderRadius: "50%", width: 42, height: 42, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#888" }} title="Auto Generate">
+            <button onClick={() => setName(generateAIName().toUpperCase())} style={{ position: "absolute", right: -18, top: -18, background: "#FF922B", border: "3px solid #fff", borderRadius: "50%", width: 42, height: 42, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#000", boxShadow: "2px 2px 0px #fff" }} title="Auto Generate">
               <Dices size={20}/>
             </button>
           </div>
         </div>
 
-        <ChunkyButton color="#1a1a1a" onClick={() => onEnter('Squad', name)} disabled={name.trim().length === 0} style={{ width: "320px", padding: "1.25rem", border: '2px solid #333' }}>
+        <ChunkyButton color="#FFD43B" onClick={() => onEnter('Squad', name)} disabled={name.trim().length === 0} style={{ width: "320px", padding: "1.25rem" }}>
           Create Lobby <ChevronRight size={20}/>
         </ChunkyButton>
       </div>
@@ -322,7 +323,7 @@ export function JoinSetupView({ onBack, onEnter }) {
 
   return (
     <div className="game-bg" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", padding: "2rem" }}>
-      <div><ChunkyButton color="#1a1a1a" onClick={onBack} style={{ display: "inline-flex", padding: "0.5rem 1rem", border: '1px solid #333' }}><ArrowLeft size={18}/> Back</ChunkyButton></div>
+      <div><ChunkyButton color="#1a1a1a" onClick={onBack} style={{ display: "inline-flex", padding: "0.5rem 1rem" }}><ArrowLeft size={18}/> Back</ChunkyButton></div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "-4rem" }}>
         <h2 className="display-font" style={{ fontSize: "2.5rem", marginBottom: "2rem", color: "#fff" }}>JOIN A ROOM</h2>
@@ -332,13 +333,13 @@ export function JoinSetupView({ onBack, onEnter }) {
 
           <div style={{ position: "relative" }}>
             <ChunkyInput value={name} onChange={(e) => setName(e.target.value.toUpperCase().slice(0, 12))} placeholder="YOUR NAME" maxLength={12}/>
-            <button onClick={() => setName(generateAIName().toUpperCase())} style={{ position: "absolute", right: -18, top: -18, background: "#1a1a1a", border: "2px solid #333", borderRadius: "50%", width: 42, height: 42, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#888" }} title="Auto Generate">
+            <button onClick={() => setName(generateAIName().toUpperCase())} style={{ position: "absolute", right: -18, top: -18, background: "#FF922B", border: "3px solid #fff", borderRadius: "50%", width: 42, height: 42, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#000", boxShadow: "2px 2px 0px #fff" }} title="Auto Generate">
               <Dices size={20}/>
             </button>
           </div>
         </div>
 
-        <ChunkyButton color="#1a1a1a" onClick={() => onEnter(code, name)} disabled={code.length !== 4 || name.trim().length === 0} style={{ width: "320px", padding: "1.25rem", border: '2px solid #333' }}>
+        <ChunkyButton color="#FFD43B" onClick={() => onEnter(code, name)} disabled={code.length !== 4 || name.trim().length === 0} style={{ width: "320px", padding: "1.25rem" }}>
           Enter Lobby <ChevronRight size={20}/>
         </ChunkyButton>
       </div>
@@ -360,23 +361,23 @@ export function LobbyView({ roomCode, players, onBack, onStart }) {
   return (
     <div className="game-bg" style={{ height: "100vh", overflowY: "auto", display: "flex", flexDirection: "column", padding: "2rem", paddingBottom: "6rem" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-        <ChunkyButton color="#1a1a1a" onClick={onBack} style={{ padding: "0.5rem 1rem", border: '1px solid #333' }}><ArrowLeft size={18}/> Leave</ChunkyButton>
-        <div style={{ background: "#1a1a1a", border: '1px solid #333', color: "#555", padding: "6px 16px", borderRadius: "6px", fontWeight: 900, fontSize: '0.75rem', letterSpacing: 2 }}>
+        <ChunkyButton color="#1a1a1a" onClick={onBack} style={{ padding: "0.5rem 1rem" }}><ArrowLeft size={18}/> Leave</ChunkyButton>
+        <div style={{ background: "#1a1a1a", border: '3px solid #333', color: "#888", padding: "8px 16px", borderRadius: "10px", fontWeight: 900, fontSize: '0.75rem', letterSpacing: 2 }}>
           WAITING FOR PLAYERS...
         </div>
       </div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3rem", marginTop: "2rem" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontWeight: 900, fontSize: "0.75rem", marginBottom: "0.75rem", color: '#555', letterSpacing: 3 }}>ROOM CODE</p>
+          <p style={{ fontWeight: 900, fontSize: "0.75rem", marginBottom: "0.75rem", color: '#888', letterSpacing: 3 }}>ROOM CODE</p>
           <div
             className="display-font"
             onClick={copyCode}
-            style={{ fontSize: "clamp(4rem, 15vw, 7rem)", background: "#161616", color: "#fff", padding: "0.25rem 2.5rem", border: "2px solid #2a2a2a", borderRadius: "16px", display: "inline-block", cursor: "pointer" }}
+            style={{ fontSize: "clamp(4rem, 15vw, 7rem)", background: "#CC5DE8", color: "#000", padding: "0.25rem 2.5rem", border: "3px solid #fff", borderRadius: "16px", display: "inline-block", cursor: "pointer", boxShadow: "6px 6px 0px #fff" }}
           >
             {roomCode}
           </div>
-          <p style={{ marginTop: "0.75rem", fontWeight: 800, fontSize: '0.8rem', color: copied ? "#51CF66" : "#555", letterSpacing: 2 }}>
+          <p style={{ marginTop: "1.25rem", fontWeight: 800, fontSize: '0.9rem', color: copied ? "#51CF66" : "#aaa", letterSpacing: 2 }}>
             {copied ? "COPIED!" : "CLICK TO COPY"}
           </p>
         </div>
@@ -390,16 +391,16 @@ export function LobbyView({ roomCode, players, onBack, onStart }) {
               const c = PALETTE[(p.color !== undefined ? p.color : index) % PALETTE.length] || PALETTE[0];
               return (
                 <div key={p.id} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                  <div style={{ width: 72, height: 72, background: '#161616', border: `2px solid ${c.bg}`, borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span className="display-font" style={{ fontSize: "2.2rem", color: c.bg }}>
+                  <div style={{ width: 72, height: 72, background: c.bg, border: `3px solid #fff`, borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: '3px 3px 0px #fff' }}>
+                    <span className="display-font" style={{ fontSize: "2.2rem", color: "#000" }}>
                       {(p.name || 'P').charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span style={{ fontWeight: 900, fontSize: "0.8rem", color: "#ccc", padding: "3px 10px", background: '#161616', border: '1px solid #2a2a2a', borderRadius: "6px", maxWidth: "90px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <span style={{ fontWeight: 900, fontSize: "0.8rem", color: "#fff", padding: "3px 10px", background: '#222', border: '2px solid #444', borderRadius: "6px", maxWidth: "90px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.name}
                   </span>
                   {p.isHost && (
-                    <span style={{ fontSize: '0.6rem', color: '#4A9EFF', fontWeight: 900, letterSpacing: 2 }}>HOST</span>
+                    <span style={{ fontSize: '0.65rem', color: '#4A9EFF', fontWeight: 900, letterSpacing: 2 }}>HOST</span>
                   )}
                 </div>
               );
@@ -407,10 +408,10 @@ export function LobbyView({ roomCode, players, onBack, onStart }) {
 
             {Array.from({ length: Math.max(0, MAX_SLOTS - players.length) }).map((_, i) => (
               <div key={`empty-${i}`} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: 72, height: 72, background: "transparent", border: "2px dashed #222", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ width: 14, height: 14, background: "#1a1a1a", borderRadius: "50%" }}/>
+                <div style={{ width: 72, height: 72, background: "transparent", border: "3px dashed #333", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 14, height: 14, background: "#222", borderRadius: "50%" }}/>
                 </div>
-                <span style={{ fontWeight: 800, fontSize: "0.8rem", color: "#333", padding: "3px 10px" }}>Open</span>
+                <span style={{ fontWeight: 800, fontSize: "0.8rem", color: "#444", padding: "3px 10px" }}>Open</span>
               </div>
             ))}
           </div>
@@ -419,8 +420,8 @@ export function LobbyView({ roomCode, players, onBack, onStart }) {
 
       {players.length >= 1 && onStart && (
         <div style={{ position: "fixed", bottom: "2rem", left: "50%", transform: "translateX(-50%)", zIndex: 100 }}>
-          <ChunkyButton color="#1a1a1a" onClick={onStart} style={{ padding: "1.25rem 4rem", fontSize: "1.1rem", border: '2px solid #4A9EFF', color: '#4A9EFF' }}>
-            <Play size={22} color="#4A9EFF"/> START GAME
+          <ChunkyButton color="#51CF66" onClick={onStart} style={{ padding: "1.25rem 4rem", fontSize: "1.2rem" }}>
+            <Play size={22} color="#000"/> START GAME
           </ChunkyButton>
         </div>
       )}

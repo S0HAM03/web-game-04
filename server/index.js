@@ -198,7 +198,7 @@ io.on('connection', (socket) => {
   socket.on('request_category', ({ roomCode }) => {
     const room = rooms[roomCode];
     if (!room || room.state !== 'lobby') return;
-    if (room.players[0].id !== socket.id) return;
+    if (!room.players.find(p => p.id === socket.id)?.isHost) return;
     room.state = 'category_select';
     io.to(roomCode).emit('choose_category');
   });
@@ -207,7 +207,7 @@ io.on('connection', (socket) => {
   socket.on('start_game', ({ roomCode, category }) => {
     const room = rooms[roomCode];
     if (!room) return;
-    if (room.players[0].id !== socket.id) return;
+    if (!room.players.find(p => p.id === socket.id)?.isHost) return;
     if (room.state !== 'category_select') return;
 
     // Filter questions by chosen category
@@ -234,7 +234,7 @@ io.on('connection', (socket) => {
   socket.on('submit_answer', ({ roomCode, answerIndex }) => {
     const room = rooms[roomCode];
     if (!room) return;
-    if (room.players[0].id !== socket.id) return; // only host can submit
+    if (!room.players.find(p => p.id === socket.id)?.isHost) return; // only host can submit
     if (room.state !== 'playing') return;
 
     handleAnswer(roomCode, answerIndex);
@@ -256,7 +256,7 @@ io.on('connection', (socket) => {
   socket.on('play_again', ({ roomCode }) => {
     const room = rooms[roomCode];
     if (!room) return;
-    if (room.players[0].id !== socket.id) return;
+    if (!room.players.find(p => p.id === socket.id)?.isHost) return;
 
     room.state = 'lobby';
     room.questions = [];
