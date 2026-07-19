@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChunkyButton } from './UI';
-import { ArrowRight, Image as ImageIcon, Volume2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { playClick, playCorrect, playWrong } from '../utils/sfx';
 
 /* ═══════════════════════════════════════
@@ -260,19 +260,12 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
             borderRadius: 10, padding: '1.75rem 2rem',
           }}>
             {question.imageUrl && (
-              <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center', background: '#0d0d0d', borderRadius: 8, padding: '0.5rem', border: '1px solid #222' }}>
                 <img 
                   src={question.imageUrl} 
-                  alt="Clue" 
-                  style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8, objectFit: 'contain', border: '1px solid #333' }} 
+                  alt="Question visual" 
+                  style={{ width: '100%', maxHeight: 300, borderRadius: 6, objectFit: 'contain' }} 
                 />
-              </div>
-            )}
-            {question.audioUrl && (
-              <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#0d0d0d', padding: '1rem', borderRadius: 8, border: '1px solid #333' }}>
-                <Volume2 size={24} color="#4A9EFF" style={{ marginBottom: '0.5rem' }}/>
-                <span style={{ fontSize: '0.75rem', color: '#888', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: 1 }}>AUDIO CLUE</span>
-                <audio controls src={question.audioUrl} style={{ height: 35, width: '100%', maxWidth: 300 }} />
               </div>
             )}
             <p style={{

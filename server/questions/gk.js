@@ -1,6 +1,6 @@
 const gk_raw = [
   { c: "General Knowledge", q: "What is the capital of Australia?", o: ["Sydney", "Melbourne", "Canberra", "Perth"], a: 2, e: "Canberra is the capital, chosen as a compromise between Sydney and Melbourne." },
-  { c: "General Knowledge", q: "Listen to this animal sound. What animal is this?", o: ["Cat", "Dog", "Wolf", "Bear"], a: 1, e: "It's a dog barking.", u: "https://actions.google.com/sounds/v1/animals/dog_barking.ogg" },
+  { c: "General Knowledge", q: "Identify the famous monument shown in the image:", o: ["Eiffel Tower", "Colosseum", "Taj Mahal", "Pisa Tower"], a: 2, e: "The Taj Mahal is located in Agra, India.", i: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=60" },
   { c: "General Knowledge", q: "Which planet is known as the Red Planet?", o: ["Venus", "Jupiter", "Saturn", "Mars"], a: 3, e: "Mars is known as the Red Planet due to its iron oxide surface." },
   { c: "General Knowledge", q: "What is the largest ocean on Earth?", o: ["Atlantic", "Indian", "Arctic", "Pacific"], a: 3, e: "The Pacific Ocean is the largest and deepest ocean." },
   { c: "General Knowledge", q: "Who wrote the play 'Romeo and Juliet'?", o: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"], a: 1, e: "William Shakespeare wrote it in the 1590s." },
@@ -59,7 +59,6 @@ const GK_QUESTIONS = gk_raw.map(q => ({
   correctIndex: q.a,
   explanation: q.e,
   imageUrl: q.i,
-  audioUrl: q.u,
   points: 100
 }));
 

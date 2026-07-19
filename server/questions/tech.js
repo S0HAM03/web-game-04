@@ -59,7 +59,6 @@ const TECH_QUESTIONS = tech_raw.map(q => ({
   correctIndex: q.a,
   explanation: q.e,
   imageUrl: q.i,
-  audioUrl: q.u,
   points: 100
 }));
 

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
 const CATEGORIES = [
-  { id: 'Video Games',        emoji: '🎮', label: 'Video Games',       desc: '10 questions about gaming', count: 10 },
-  { id: 'YouTube & Creators', emoji: '📺', label: 'YouTube & Creators', desc: '10 questions about YouTube', count: 10 },
-  { id: 'Movies',             emoji: '🎬', label: 'Movies',             desc: '10 questions about cinema', count: 10 },
-  { id: 'Top Web Series',     emoji: '📱', label: 'Top Web Series',     desc: '10 questions about shows',  count: 10 },
+  { id: 'Video Games',        emoji: '🎮', label: 'Video Games',       desc: '20 questions about gaming', count: 20 },
+  { id: 'YouTube & Creators', emoji: '📺', label: 'YouTube & Creators', desc: '20 questions about YouTube', count: 20 },
+  { id: 'Movies',             emoji: '🎬', label: 'Movies',             desc: '20 questions about cinema', count: 20 },
+  { id: 'Top Web Series',     emoji: '📱', label: 'Top Web Series',     desc: '20 questions about shows',  count: 20 },
+  { id: 'Anime & Manga',      emoji: '🏮', label: 'Anime & Manga',      desc: '20 questions about anime',  count: 20 },
+  { id: 'Tech & Internet Culture', emoji: '💻', label: 'Tech & Internet', desc: '20 questions about tech',  count: 20 },
+  { id: 'General Knowledge',  emoji: '🧠', label: 'General Knowledge',  desc: '20 questions about trivia', count: 20 },
 ];
 
 export default function CategorySelect({ isHost, onSelect }) {
@@ -32,12 +35,12 @@ export default function CategorySelect({ isHost, onSelect }) {
         </p>
       </div>
 
-      {/* Category grid — 2x2 */}
+      {/* Category grid — Auto-responsive */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: '1rem',
-        maxWidth: 580,
+        maxWidth: 800,
         width: '100%',
       }}>
         {CATEGORIES.map((cat) => {

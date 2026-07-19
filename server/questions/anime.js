@@ -59,7 +59,6 @@ const ANIME_QUESTIONS = anime_raw.map(q => ({
   correctIndex: q.a,
   explanation: q.e,
   imageUrl: q.i,
-  audioUrl: q.u,
   points: 100
 }));
 
