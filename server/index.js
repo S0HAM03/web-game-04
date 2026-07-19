@@ -28,7 +28,7 @@ const io = new Server(server, {
 // }
 const rooms = {};
 
-const QUESTIONS_PER_GAME = 15;
+const QUESTIONS_PER_GAME = 20;
 const REVEAL_DURATION = 15000; // ms to show result before auto-next
 
 // ── Helpers ────────────────────────────────────────

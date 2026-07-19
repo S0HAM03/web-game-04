@@ -137,7 +137,7 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
     if (result) {
       if (idx === result.correctIndex) {
         return {
-          background: '#0e2e16', border: '2px solid #51CF66',
+          background: '#161616', border: '2px solid #51CF66',
           borderRadius: 8, padding: '1rem 1.25rem',
           display: 'flex', alignItems: 'center', gap: '0.85rem',
           cursor: 'default', width: '100%',
@@ -145,14 +145,14 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
       }
       if (idx === result.chosenIndex && !result.correct) {
         return {
-          background: '#2a0e0e', border: '2px solid #FF6B6B',
+          background: '#161616', border: '2px solid #FF6B6B',
           borderRadius: 8, padding: '1rem 1.25rem',
           display: 'flex', alignItems: 'center', gap: '0.85rem',
           cursor: 'default', width: '100%',
         };
       }
       return {
-        background: '#111', border: '2px solid #1a1a1a',
+        background: '#161616', border: '2px solid #1a1a1a',
         borderRadius: 8, padding: '1rem 1.25rem',
         display: 'flex', alignItems: 'center', gap: '0.85rem',
         cursor: 'default', opacity: 0.45, width: '100%',
@@ -289,27 +289,6 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
               </button>
             ))}
           </div>
-
-          {/* EXPLANATION / FEEDBACK (Shown only when result exists) */}
-          {result && (
-            <div style={{
-              background: '#111', border: `1px solid ${result.correct ? '#51CF66' : '#FF6B6B'}`,
-              borderRadius: 8, padding: '1rem 1.25rem',
-              animation: 'slideUp 0.3s ease-out', marginTop: '0.25rem'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <span style={{ color: result.correct ? '#51CF66' : '#FF6B6B', fontWeight: 900, fontSize: '0.9rem' }}>
-                  {result.correct ? 'Correct! ' : 'Wrong! '}
-                  <span style={{ color: '#666', fontSize: '0.8rem' }}>
-                    {result.correct ? `+${result.pointsEarned} pts` : `Correct answer was ${question.options[result.correctIndex]}`}
-                  </span>
-                </span>
-              </div>
-              <p style={{ margin: 0, color: '#aaa', fontSize: '0.85rem', lineHeight: 1.5, fontWeight: 700, fontFamily: "'Nunito'" }}>
-                {result.explanation}
-              </p>
-            </div>
-          )}
 
           {/* ACTIONS / STATUS */}
           {!result && isHost && (

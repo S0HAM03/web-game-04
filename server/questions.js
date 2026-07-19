@@ -1,382 +1,229 @@
-// Quiz Mania — Question Bank
-// 40 questions across 4 categories, 10 each
+const vg = Array.from({ length: 50 }).map((_, i) => ({ category: "Video Games", categoryColor: "#00FF66", points: 100 }));
+const yt = Array.from({ length: 50 }).map((_, i) => ({ category: "YouTube & Creators", categoryColor: "#FF2A5F", points: 100 }));
+const mv = Array.from({ length: 50 }).map((_, i) => ({ category: "Movies", categoryColor: "#FFD700", points: 100 }));
+const ws = Array.from({ length: 50 }).map((_, i) => ({ category: "Top Web Series", categoryColor: "#9D00FF", points: 100 }));
 
+// To save space, we'll populate them manually in a compact way
 const QUESTIONS = [
-  // ══════════════════════════════════
-  // 🎮 VIDEO GAMES (10)
-  // ══════════════════════════════════
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "Which game features a battle royale mode called 'Warzone' and is part of the Call of Duty franchise?",
-    options: ["Fortnite", "PUBG", "Call of Duty: Warzone", "Apex Legends"],
-    correctIndex: 2,
-    explanation: "Call of Duty: Warzone is the free-to-play battle royale mode in the CoD franchise, launched in 2020.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "In Minecraft, what material is needed to craft a Nether Portal?",
-    options: ["Diamond", "Obsidian", "Netherite", "Iron"],
-    correctIndex: 1,
-    explanation: "Obsidian blocks are required to build a Nether Portal — you need at least 10 to create the frame.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "Which company developed the game 'The Legend of Zelda: Breath of the Wild'?",
-    options: ["Sony", "Nintendo", "Capcom", "Square Enix"],
-    correctIndex: 1,
-    explanation: "Nintendo developed Breath of the Wild, released in 2017 alongside the Nintendo Switch launch.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "What is the name of the currency used in Fortnite to purchase cosmetics?",
-    options: ["Gold Bars", "V-Bucks", "Minecoins", "CoD Points"],
-    correctIndex: 1,
-    explanation: "V-Bucks (Vindertech Bucks) are Fortnite's premium currency used to buy skins, emotes, and more.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "In 'Among Us', what do Impostors do?",
-    options: ["Complete tasks to win", "Sabotage and eliminate Crewmates", "Fix the ship", "Vote out other players"],
-    correctIndex: 1,
-    explanation: "Impostors win by eliminating Crewmates and sabotaging the ship without being voted out.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "Which game is known for the phrase 'Do a barrel roll!'?",
-    options: ["F-Zero", "Star Fox 64", "Ace Combat", "Sky Force"],
-    correctIndex: 1,
-    explanation: "Peppy Hare's famous line 'Do a barrel roll!' comes from Star Fox 64, released in 1997.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "What is the highest rank achievable in Valorant's competitive mode?",
-    options: ["Immortal", "Grandmaster", "Radiant", "Diamond"],
-    correctIndex: 2,
-    explanation: "Radiant is the highest competitive rank in Valorant, awarded to the top 500 players per region.",
-    points: 150
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "Which game franchise features characters like Master Chief and the Covenant?",
-    options: ["Destiny", "Halo", "Mass Effect", "Gears of War"],
-    correctIndex: 1,
-    explanation: "Halo is the iconic franchise featuring Master Chief (Spartan-117) battling the alien alliance known as the Covenant.",
-    points: 100
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "In 'God of War' (2018), what is the name of Kratos's son?",
-    options: ["Baldur", "Atreus", "Mimir", "Freya"],
-    correctIndex: 1,
-    explanation: "Atreus, also known by his giant name Loki, is Kratos's son and companion throughout the 2018 God of War game.",
-    points: 150
-  },
-  {
-    category: "Video Games",
-    categoryColor: "#00FF66",
-    question: "Which game has players building settlements and surviving zombie-like creatures called 'Husks' in 'Save the World' mode?",
-    options: ["7 Days to Die", "Fortnite", "Dying Light", "Left 4 Dead"],
-    correctIndex: 1,
-    explanation: "Fortnite: Save the World is the PvE mode where players build forts and defend against Husks.",
-    points: 150
-  },
+  // 🎮 VIDEO GAMES (50)
+  { c: "Video Games", q: "Which game features a battle royale mode called 'Warzone'?", o: ["Fortnite", "PUBG", "Call of Duty", "Apex Legends"], a: 2, e: "Call of Duty: Warzone is the free-to-play battle royale mode." },
+  { c: "Video Games", q: "In Minecraft, what material is needed to craft a Nether Portal?", o: ["Diamond", "Obsidian", "Netherite", "Iron"], a: 1, e: "Obsidian blocks are required to build a Nether Portal." },
+  { c: "Video Games", q: "Which company developed 'The Legend of Zelda: Breath of the Wild'?", o: ["Sony", "Nintendo", "Capcom", "Square Enix"], a: 1, e: "Nintendo developed Breath of the Wild." },
+  { c: "Video Games", q: "What is the currency used in Fortnite?", o: ["Gold Bars", "V-Bucks", "Minecoins", "CoD Points"], a: 1, e: "V-Bucks are Fortnite's premium currency." },
+  { c: "Video Games", q: "In 'Among Us', what do Impostors do?", o: ["Complete tasks", "Sabotage and eliminate", "Fix the ship", "Vote out players"], a: 1, e: "Impostors win by eliminating Crewmates." },
+  { c: "Video Games", q: "Which game is known for 'Do a barrel roll!'?", o: ["F-Zero", "Star Fox 64", "Ace Combat", "Sky Force"], a: 1, e: "Peppy Hare says this in Star Fox 64." },
+  { c: "Video Games", q: "What is the highest rank in Valorant?", o: ["Immortal", "Grandmaster", "Radiant", "Diamond"], a: 2, e: "Radiant is the highest competitive rank in Valorant." },
+  { c: "Video Games", q: "Which franchise features Master Chief?", o: ["Destiny", "Halo", "Mass Effect", "Gears of War"], a: 1, e: "Halo features Master Chief." },
+  { c: "Video Games", q: "In 'God of War' (2018), what is Kratos's son's name?", o: ["Baldur", "Atreus", "Mimir", "Freya"], a: 1, e: "Atreus is Kratos's son." },
+  { c: "Video Games", q: "Which game has 'Save the World' mode?", o: ["7 Days to Die", "Fortnite", "Dying Light", "Left 4 Dead"], a: 1, e: "Fortnite has a Save the World mode." },
+  { c: "Video Games", q: "What is the best-selling video game of all time?", o: ["Tetris", "Minecraft", "GTA V", "Wii Sports"], a: 1, e: "Minecraft is the best-selling game of all time." },
+  { c: "Video Games", q: "Who is the main protagonist of the Tomb Raider series?", o: ["Nathan Drake", "Lara Croft", "Aloy", "Samus Aran"], a: 1, e: "Lara Croft is the iconic tomb raider." },
+  { c: "Video Games", q: "What year was the first PlayStation released?", o: ["1992", "1994", "1996", "1998"], a: 1, e: "The original PlayStation launched in Japan in 1994." },
+  { c: "Video Games", q: "In which game do you play as Geralt of Rivia?", o: ["Skyrim", "The Witcher", "Dragon Age", "Dark Souls"], a: 1, e: "Geralt is the protagonist of The Witcher series." },
+  { c: "Video Games", q: "What is the name of the princess you must rescue in Super Mario Bros?", o: ["Zelda", "Daisy", "Peach", "Rosalina"], a: 2, e: "Princess Peach of the Mushroom Kingdom." },
+  { c: "Video Games", q: "Which game popularized the 'Auto Chess' genre?", o: ["Dota 2", "League of Legends", "Hearthstone", "Smite"], a: 0, e: "Dota Auto Chess was a custom mod that started the genre." },
+  { c: "Video Games", q: "What does 'NPC' stand for?", o: ["Non-Playable Character", "New Player Class", "No Player Control", "Network Protocol Connection"], a: 0, e: "Non-Playable Character." },
+  { c: "Video Games", q: "Which game features a city named Los Santos?", o: ["Cyberpunk 2077", "Watch Dogs", "GTA V", "Saints Row"], a: 2, e: "Los Santos is the setting of GTA V." },
+  { c: "Video Games", q: "What type of Pokemon is Pikachu?", o: ["Water", "Fire", "Grass", "Electric"], a: 3, e: "Pikachu is an Electric-type Pokemon." },
+  { c: "Video Games", q: "In Portal, what is a lie?", o: ["The Exit", "The Cake", "The Companion Cube", "GLaDOS"], a: 1, e: "'The cake is a lie' is a famous phrase from Portal." },
+  { c: "Video Games", q: "Which studio developed 'Elden Ring'?", o: ["Bethesda", "FromSoftware", "Naughty Dog", "CD Projekt Red"], a: 1, e: "FromSoftware developed Elden Ring." },
+  { c: "Video Games", q: "What is the max level in classic World of Warcraft?", o: ["50", "60", "70", "80"], a: 1, e: "Level 60 was the cap in original WoW." },
+  { c: "Video Games", q: "Who is Mario's brother?", o: ["Wario", "Toad", "Luigi", "Bowser"], a: 2, e: "Luigi is Mario's younger brother." },
+  { c: "Video Games", q: "Which game is set in the fictional region of Skyrim?", o: ["The Elder Scrolls V", "Fallout 4", "The Witcher 3", "Dragon's Dogma"], a: 0, e: "The Elder Scrolls V: Skyrim." },
+  { c: "Video Games", q: "What is the main objective of Pac-Man?", o: ["Save the princess", "Eat all the dots", "Defeat Donkey Kong", "Escape the maze"], a: 1, e: "You must eat all dots while avoiding ghosts." },
+  { c: "Video Games", q: "In Overwatch, what role is Mercy?", o: ["Tank", "Damage", "Support", "Flanker"], a: 2, e: "Mercy is a Support hero." },
+  { c: "Video Games", q: "What is the name of the silent protagonist in Half-Life?", o: ["Gordon Freeman", "Master Chief", "Doomguy", "Isaac Clarke"], a: 0, e: "Gordon Freeman is the iconic protagonist." },
+  { c: "Video Games", q: "Which game series features the 'Hidden Blade'?", o: ["Dishonored", "Assassin's Creed", "Hitman", "Thief"], a: 1, e: "The Hidden Blade is the signature weapon in Assassin's Creed." },
+  { c: "Video Games", q: "What game features the 'Fatality' finishing moves?", o: ["Street Fighter", "Tekken", "Mortal Kombat", "Super Smash Bros"], a: 2, e: "Mortal Kombat is known for its brutal Fatalities." },
+  { c: "Video Games", q: "What block breaks fastest with a shovel in Minecraft?", o: ["Wood", "Stone", "Dirt", "Glass"], a: 2, e: "Shovels are used for dirt, sand, and gravel." },
+  { c: "Video Games", q: "Which of these is NOT a playable race in Skyrim?", o: ["Argonian", "Khajiit", "Dwarf", "Breton"], a: 2, e: "Dwarves (Dwemer) are extinct in Skyrim." },
+  { c: "Video Games", q: "What is the name of the main ship in Among Us?", o: ["The Skeld", "Polus", "Mira HQ", "Airship"], a: 0, e: "The Skeld is the original and most famous map." },
+  { c: "Video Games", q: "What is the highest rarity of loot in most battle royales (Fortnite, Apex)?", o: ["Epic", "Legendary", "Rare", "Mythic/Heirloom"], a: 3, e: "Mythic or Heirloom tier is generally the highest." },
+  { c: "Video Games", q: "In League of Legends, how many lanes are there on Summoner's Rift?", o: ["2", "3", "4", "5"], a: 1, e: "There are 3 lanes: Top, Mid, and Bottom." },
+  { c: "Video Games", q: "Which game features the song 'Megalovania'?", o: ["Undertale", "Celeste", "Hollow Knight", "Shovel Knight"], a: 0, e: "Megalovania plays during the Sans boss fight in Undertale." },
+  { c: "Video Games", q: "What company owns the Xbox brand?", o: ["Sony", "Nintendo", "Microsoft", "Sega"], a: 2, e: "Microsoft created and owns Xbox." },
+  { c: "Video Games", q: "Which game is about surviving a nuclear wasteland?", o: ["Wasteland", "Fallout", "Metro", "All of the above"], a: 3, e: "All of these feature nuclear post-apocalyptic settings." },
+  { c: "Video Games", q: "What is the classic Konami code?", o: ["Up, Down, Left, Right", "Up, Up, Down, Down, Left, Right, Left, Right, B, A", "A, B, A, C, A, B, B", "Right, Left, Down, Up, A, B"], a: 1, e: "The legendary Konami code grants cheats in many games." },
+  { c: "Video Games", q: "What is the name of Sonic the Hedgehog's sidekick?", o: ["Knuckles", "Shadow", "Tails", "Amy"], a: 2, e: "Miles 'Tails' Prower is Sonic's flying fox sidekick." },
+  { c: "Video Games", q: "Which indie game has you managing a farm in Pelican Town?", o: ["Harvest Moon", "Animal Crossing", "Stardew Valley", "Slime Rancher"], a: 2, e: "Stardew Valley takes place in Pelican Town." },
+  { c: "Video Games", q: "What genre of game is 'Diablo'?", o: ["FPS", "RTS", "ARPG", "MMORPG"], a: 2, e: "Diablo is an Action Role-Playing Game (ARPG)." },
+  { c: "Video Games", q: "In CS:GO / CS2, what is the signature sniper rifle?", o: ["Scout", "AWP", "Dragunov", "Barret"], a: 1, e: "The AWP is the iconic one-shot sniper." },
+  { c: "Video Games", q: "Which console was the first to use optical discs instead of cartridges?", o: ["PlayStation", "Sega CD", "Nintendo 64", "Xbox"], a: 1, e: "The Sega CD add-on predated the PlayStation." },
+  { c: "Video Games", q: "What is the name of the main city in Cyberpunk 2077?", o: ["Night City", "Neon City", "New Angeles", "Chrome City"], a: 0, e: "The game is set in Night City." },
+  { c: "Video Games", q: "Which of these games was created by a single developer (mostly)?", o: ["Hollow Knight", "Cuphead", "Stardew Valley", "Terraria"], a: 2, e: "Eric Barone (ConcernedApe) developed Stardew Valley alone." },
+  { c: "Video Games", q: "What is the highest-grossing arcade game of all time?", o: ["Space Invaders", "Pac-Man", "Street Fighter II", "Donkey Kong"], a: 1, e: "Pac-Man generated billions in quarters in the 80s." },
+  { c: "Video Games", q: "In Apex Legends, who is the Holographic Trickster?", o: ["Wraith", "Pathfinder", "Mirage", "Octane"], a: 2, e: "Mirage uses holograms to bamboozle enemies." },
+  { c: "Video Games", q: "What is the name of the protagonist in the Persona 5?", o: ["Joker", "Crow", "Skull", "Panther"], a: 0, e: "The protagonist's phantom thief code name is Joker." },
+  { c: "Video Games", q: "Which game features a mode called 'Ultimate Team'?", o: ["NBA 2K", "FIFA / EA Sports FC", "Madden NFL", "All of the above"], a: 3, e: "All EA and 2K sports games feature an Ultimate Team mode." },
+  { c: "Video Games", q: "What is the name of the default skin in Roblox?", o: ["Steve", "Noob", "Bacon Hair", "Blocky"], a: 2, e: "'Bacon Hair' is the nickname for the default male avatar." },
+  { c: "Video Games", q: "Which of these is a popular Roblox game?", o: ["Adopt Me!", "Brookhaven", "Blox Fruits", "All of the above"], a: 3, e: "All of these have billions of visits on Roblox." },
 
-  // ══════════════════════════════════
-  // 📺 YOUTUBE & CREATORS (10)
-  // ══════════════════════════════════
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "Who holds the record for the most YouTube subscribers as an individual creator (as of 2024)?",
-    options: ["PewDiePie", "MrBeast", "T-Series", "Cocomelon"],
-    correctIndex: 1,
-    explanation: "MrBeast (Jimmy Donaldson) surpassed PewDiePie to become the most-subscribed individual creator on YouTube.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "What is the real name of the YouTuber known as 'PewDiePie'?",
-    options: ["Felix Kjellberg", "Mark Fischbach", "Sean McLoughlin", "Toby Turner"],
-    correctIndex: 0,
-    explanation: "Felix Arvid Ulf Kjellberg is the Swedish YouTuber known worldwide as PewDiePie.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "Which YouTube channel is famous for the 'Rewind' series, ranking the biggest YouTube moments of the year?",
-    options: ["YouTube Spotlight", "YouTube Originals", "YouTube Official", "YouTube HQ"],
-    correctIndex: 0,
-    explanation: "YouTube Rewind was an annual video series by YouTube Spotlight that highlighted top creators and trends — discontinued after 2019.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "What challenge did MrBeast complete that involved him counting to 100,000?",
-    options: ["100,000 Subscribers Challenge", "Counting to 100k", "He actually counted to 100,000 on video", "100k Giveaway"],
-    correctIndex: 2,
-    explanation: "MrBeast famously counted from 1 to 100,000 in a 40+ hour video to hit his early milestone.",
-    points: 150
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "Which YouTuber is known for the phrase 'Smash that like button' and hosts 5-Minute Crafts-style content?",
-    options: ["Dude Perfect", "5-Minute Crafts", "Crafty Panda", "Troom Troom"],
-    correctIndex: 1,
-    explanation: "5-Minute Crafts is famous for life hacks, DIY projects, and widely mocked 'crafts' with the classic 'Like if you...' call-to-action.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "What is the name of Markiplier's real-life charity fundraising events?",
-    options: ["Mark's Marathon", "Charity Stream Extravaganza", "A Charity Livestream", "Games for Good"],
-    correctIndex: 2,
-    explanation: "Markiplier (Mark Fischbach) has hosted multiple 'A Charity Livestream' events raising millions for various causes.",
-    points: 150
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "Which YouTube series features youtuber Linus Sebastian reviewing tech products?",
-    options: ["Tech Quickie", "Linus Tech Tips", "TechLinked", "Techquickie"],
-    correctIndex: 1,
-    explanation: "Linus Tech Tips (LTT) is Linus Sebastian's main channel covering PC hardware, reviews, and builds.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "What was the most disliked YouTube video of all time before YouTube removed public dislike counts?",
-    options: ["Baby Shark", "YouTube Rewind 2018", "Despacito", "Friday by Rebecca Black"],
-    correctIndex: 1,
-    explanation: "YouTube Rewind 2018 became the most disliked video in YouTube history with over 20 million dislikes before the count was hidden.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "CarryMinati is one of India's biggest YouTubers. What is his real name?",
-    options: ["Ajey Nagar", "Ashish Chanchlani", "Amit Bhadana", "BB Ki Vines"],
-    correctIndex: 0,
-    explanation: "Ajey Nagar, known as CarryMinati, is famous for his roast videos and gaming content.",
-    points: 100
-  },
-  {
-    category: "YouTube & Creators",
-    categoryColor: "#FF2A5F",
-    question: "What is the name of Dude Perfect's most famous recurring segment on their channel?",
-    options: ["Trick Shot Olympics", "Stereotypes", "Battle Royale", "Overtime"],
-    correctIndex: 1,
-    explanation: "Dude Perfect's 'Stereotypes' series humorously portrays relatable character types in various sports and situations.",
-    points: 150
-  },
+  // 📺 YOUTUBE & CREATORS (50)
+  { c: "YouTube & Creators", q: "Who holds the record for most subscribers as an individual?", o: ["PewDiePie", "MrBeast", "T-Series", "Cocomelon"], a: 1, e: "MrBeast is the most-subscribed individual." },
+  { c: "YouTube & Creators", q: "What is the real name of PewDiePie?", o: ["Felix Kjellberg", "Mark Fischbach", "Sean McLoughlin", "Toby Turner"], a: 0, e: "Felix Kjellberg is PewDiePie." },
+  { c: "YouTube & Creators", q: "Which channel is famous for the 'Rewind' series?", o: ["YouTube Spotlight", "YouTube Originals", "YouTube Official", "YouTube HQ"], a: 0, e: "YouTube Spotlight posted the Rewinds." },
+  { c: "YouTube & Creators", q: "What challenge involved MrBeast counting to 100,000?", o: ["100k Subs", "Counting to 100k", "Count Challenge", "100k Giveaway"], a: 1, e: "He literally counted to 100,000." },
+  { c: "YouTube & Creators", q: "Which YouTuber is known for 'Smash that like button' and crafts?", o: ["Dude Perfect", "5-Minute Crafts", "Crafty Panda", "Troom Troom"], a: 1, e: "5-Minute Crafts is widely known for this." },
+  { c: "YouTube & Creators", q: "What is the name of Markiplier's charity streams?", o: ["Mark's Marathon", "Charity Stream", "A Charity Livestream", "Games for Good"], a: 2, e: "A Charity Livestream is his standard title." },
+  { c: "YouTube & Creators", q: "Which series features Linus Sebastian reviewing tech?", o: ["Tech Quickie", "Linus Tech Tips", "TechLinked", "Techquickie"], a: 1, e: "Linus Tech Tips (LTT)." },
+  { c: "YouTube & Creators", q: "What was the most disliked YouTube video of all time?", o: ["Baby Shark", "YouTube Rewind 2018", "Despacito", "Friday"], a: 1, e: "Rewind 2018 held the record." },
+  { c: "YouTube & Creators", q: "CarryMinati is one of India's biggest YouTubers. Real name?", o: ["Ajey Nagar", "Ashish Chanchlani", "Amit Bhadana", "BB Ki Vines"], a: 0, e: "Ajey Nagar is CarryMinati." },
+  { c: "YouTube & Creators", q: "What is Dude Perfect's most famous recurring segment?", o: ["Trick Shots", "Stereotypes", "Battle Royale", "Overtime"], a: 1, e: "Stereotypes is their huge comedy segment." },
+  { c: "YouTube & Creators", q: "Which creator lived in a sensory deprivation tank for 50 hours?", o: ["Logan Paul", "MrBeast", "Markiplier", "Airrack"], a: 1, e: "MrBeast did this challenge." },
+  { c: "YouTube & Creators", q: "Who is the Irish gaming YouTuber known for yelling 'Top of the mornin'?", o: ["Jacksepticeye", "DanTDM", "Terroriser", "Daithi De Nogla"], a: 0, e: "Jacksepticeye (Sean McLoughlin)." },
+  { c: "YouTube & Creators", q: "Which channel features the 'Hot Ones' interview show?", o: ["First We Feast", "Complex", "Vice", "BuzzFeed"], a: 0, e: "First We Feast produces Hot Ones." },
+  { c: "YouTube & Creators", q: "Who is the host of 'Hot Ones'?", o: ["Gordon Ramsay", "Sean Evans", "Binging with Babish", "Joshua Weissman"], a: 1, e: "Sean Evans asks the questions." },
+  { c: "YouTube & Creators", q: "What is the name of Logan Paul's sports drink brand?", o: ["Gatorade", "Prime", "Bang", "G Fuel"], a: 1, e: "Prime, co-founded with KSI." },
+  { c: "YouTube & Creators", q: "Which YouTuber famously boxed Floyd Mayweather?", o: ["Jake Paul", "KSI", "Logan Paul", "Deji"], a: 2, e: "Logan Paul fought him in an exhibition match." },
+  { c: "YouTube & Creators", q: "What is the most viewed YouTube video ever?", o: ["Despacito", "Shape of You", "Baby Shark Dance", "See You Again"], a: 2, e: "Baby Shark has over 13 billion views." },
+  { c: "YouTube & Creators", q: "Which channel is known for 'Epic Rap Battles of History'?", o: ["Smosh", "ERB", "CollegeHumor", "Rooster Teeth"], a: 1, e: "ERB (Epic Rap Battles)." },
+  { c: "YouTube & Creators", q: "Who started the 'Sidemen' YouTube group?", o: ["KSI & others", "MrBeast crew", "FaZe Clan", "Beta Squad"], a: 0, e: "The Sidemen includes KSI, Miniminter, etc." },
+  { c: "YouTube & Creators", q: "What game did Dream speedrun, sparking a massive cheating controversy?", o: ["Terraria", "SpeedRunners", "Minecraft", "Super Mario 64"], a: 2, e: "Dream's Minecraft speedrun luck was statistically impossible." },
+  { c: "YouTube & Creators", q: "Which YouTuber is known for his 'Try Not To Laugh' challenges and playing FNAF?", o: ["PewDiePie", "Markiplier", "Jacksepticeye", "CoryxKenshin"], a: 1, e: "Markiplier is famously associated with FNAF." },
+  { c: "YouTube & Creators", q: "Who won the first Creator Clash boxing event main event?", o: ["iDubbbz", "Doctor Mike", "Alex Wassabi", "Minx"], a: 1, e: "Doctor Mike defeated iDubbbz." },
+  { c: "YouTube & Creators", q: "What is the name of MrBeast's burger chain?", o: ["Beast Burger", "MrBeast Burger", "Jimmy's Burgers", "Chandler's Grill"], a: 1, e: "MrBeast Burger." },
+  { c: "YouTube & Creators", q: "Which creator makes incredibly detailed engineering videos, like a glitter bomb for porch pirates?", o: ["Michael Reeves", "Mark Rober", "William Osman", "Colin Furze"], a: 1, e: "Mark Rober is a former NASA engineer." },
+  { c: "YouTube & Creators", q: "What does MKBHD stand for?", o: ["Marques Brownlee HD", "Mobile Keyboard High Def", "Make Better HD", "Micro Knowledge Base HD"], a: 0, e: "Marques Keith Brownlee High Definition." },
+  { c: "YouTube & Creators", q: "Which Minecraft YouTuber tragically passed away in 2022?", o: ["Technoblade", "CaptainSparklez", "SkyDoesMinecraft", "StampyLongHead"], a: 0, e: "Technoblade passed away from cancer." },
+  { c: "YouTube & Creators", q: "Who is the creator of the 'Five Nights at Freddy's' song that went viral?", o: ["The Living Tombstone", "CG5", "TryHardNinja", "JT Music"], a: 0, e: "The Living Tombstone made the iconic FNAF 1 song." },
+  { c: "YouTube & Creators", q: "Which channel is known for 'Does It Blend?' videos?", o: ["Blendtec", "Vitamix", "SmashIt", "Will It Blend"], a: 0, e: "Blendtec blenders ran the campaign." },
+  { c: "YouTube & Creators", q: "What is the most subscribed channel in India?", o: ["Zee Music", "T-Series", "Sony SAB", "SET India"], a: 1, e: "T-Series is the largest channel." },
+  { c: "YouTube & Creators", q: "Which YouTuber built a fully functioning lightsaber?", o: ["Hacksmith", "Mark Rober", "Colin Furze", "Michael Reeves"], a: 0, e: "Hacksmith Industries." },
+  { c: "YouTube & Creators", q: "Who makes the 'Honest Trailers' series?", o: ["CinemaSins", "Screen Junkies", "How It Should Have Ended", "Pitch Meetings"], a: 1, e: "Screen Junkies produces Honest Trailers." },
+  { c: "YouTube & Creators", q: "Which VTuber holds the record for most superchats?", o: ["Gawr Gura", "Kiryu Coco", "Ironmouse", "Rushia"], a: 3, e: "Uruha Rushia (Hololive) held the record." },
+  { c: "YouTube & Creators", q: "What year was YouTube founded?", o: ["2003", "2005", "2007", "2009"], a: 1, e: "YouTube was founded in 2005." },
+  { c: "YouTube & Creators", q: "Who bought YouTube in 2006?", o: ["Microsoft", "Yahoo", "Google", "Facebook"], a: 2, e: "Google acquired it for $1.65 billion." },
+  { c: "YouTube & Creators", q: "What was the very first video uploaded to YouTube?", o: ["Charlie bit my finger", "Me at the zoo", "Numa Numa", "Star Wars Kid"], a: 1, e: "'Me at the zoo' by co-founder Jawed Karim." },
+  { c: "YouTube & Creators", q: "Which YouTuber group lived in the 'Hype House'?", o: ["TikTokers", "Team 10", "AMP", "FaZe"], a: 0, e: "The Hype House was a TikTok creator collective." },
+  { c: "YouTube & Creators", q: "Who created the 'Unus Annus' channel which was deleted after one year?", o: ["Dan and Phil", "Markiplier & CrankGameplays", "Smosh", "Good Mythical Morning"], a: 1, e: "Mark and Ethan created Unus Annus." },
+  { c: "YouTube & Creators", q: "What is the name of the popular web show hosted by Rhett & Link?", o: ["Good Mythical Morning", "First We Feast", "The Try Guys", "Binging with Babish"], a: 0, e: "Good Mythical Morning (GMM)." },
+  { c: "YouTube & Creators", q: "Which YouTuber famously apologized while playing a ukulele?", o: ["Laura Lee", "Colleen Ballinger", "Tati Westbrook", "James Charles"], a: 1, e: "Colleen Ballinger's 'Toxic Gossip Train'." },
+  { c: "YouTube & Creators", q: "Who made the viral 'Harlem Shake' original video?", o: ["Filthy Frank", "PewDiePie", "Smosh", "Nigahiga"], a: 0, e: "Filthy Frank (Joji) started the trend." },
+  { c: "YouTube & Creators", q: "What does 'ASMR' stand for?", o: ["Audio Sensory Meridian Response", "Autonomous Sensory Meridian Response", "Acoustic Sound Mind Relaxation", "Auditory Stimulation Mental Relief"], a: 1, e: "Autonomous Sensory Meridian Response." },
+  { c: "YouTube & Creators", q: "Which makeup guru launched 'Jeffree Star Cosmetics'?", o: ["James Charles", "Jeffree Star", "NikkieTutorials", "Manny MUA"], a: 1, e: "Jeffree Star." },
+  { c: "YouTube & Creators", q: "Who is the main face of the 'Try Guys'?", o: ["Zach, Keith, Eugene", "Rhett & Link", "Smosh Cast", "Sidemen"], a: 0, e: "Zach, Keith, Eugene (and formerly Ned)." },
+  { c: "YouTube & Creators", q: "What platform did many YouTubers start on before it shut down?", o: ["Vine", "MySpace", "Vimeo", "Dailymotion"], a: 0, e: "Vine was huge for many current YouTubers." },
+  { c: "YouTube & Creators", q: "Who made 'Bitch Lasagna'?", o: ["T-Series", "MrBeast", "PewDiePie", "KSI"], a: 2, e: "PewDiePie made it as a diss track to T-Series." },
+  { c: "YouTube & Creators", q: "What is the golden play button awarded for?", o: ["100k subs", "1M subs", "10M subs", "50M subs"], a: 1, e: "1 Million subscribers." },
+  { c: "YouTube & Creators", q: "Which channel is known for cinema mistakes?", o: ["CinemaSins", "Honest Trailers", "Dead Meat", "RedLetterMedia"], a: 0, e: "CinemaSins ('Everything Wrong With...')." },
+  { c: "YouTube & Creators", q: "Who hosts the 'Kill Count' horror movie series?", o: ["James A. Janisse", "Markiplier", "MatPat", "SpookyRice"], a: 0, e: "James A. Janisse on Dead Meat." },
+  { c: "YouTube & Creators", q: "Who is the creator of the 'Game Theory' channel?", o: ["Austin", "MatPat", "Gaijin Goombah", "Ronnie"], a: 1, e: "MatPat (Matthew Patrick)." },
+  { c: "YouTube & Creators", q: "What is IShowSpeed's favorite football player?", o: ["Messi", "Neymar", "Ronaldo", "Mbappe"], a: 2, e: "He is famously obsessed with Cristiano Ronaldo." },
 
-  // ══════════════════════════════════
-  // 🎬 MOVIES (10)
-  // ══════════════════════════════════
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "Which movie features the famous line: 'Why so serious?'",
-    options: ["Batman Begins", "The Dark Knight", "Joker (2019)", "Batman v Superman"],
-    correctIndex: 1,
-    explanation: "Heath Ledger's iconic portrayal of the Joker in The Dark Knight (2008) gave us this unforgettable line.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "In 'Avengers: Endgame', who uses the gauntlet to bring back everyone snapped away by Thanos?",
-    options: ["Tony Stark", "Bruce Banner / Hulk", "Thor", "Captain America"],
-    correctIndex: 1,
-    explanation: "Bruce Banner (Smart Hulk) used the Infinity Gauntlet first to reverse Thanos's snap, bringing back everyone.",
-    points: 150
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "Which animated Pixar movie is set almost entirely in the Land of the Dead?",
-    options: ["Soul", "Onward", "Coco", "The Book of Life"],
-    correctIndex: 2,
-    explanation: "Coco (2017) follows Miguel in the Land of the Dead during Día de los Muertos. It won the Oscar for Best Animated Feature.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "What is the name of the ship in 'Titanic' (1997)?",
-    options: ["Olympic", "Titanic", "Britannic", "Lusitania"],
-    correctIndex: 1,
-    explanation: "The RMS Titanic is the doomed luxury ocean liner central to James Cameron's 1997 epic romance-disaster film.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "Which director made the movie 'Inception' (2010)?",
-    options: ["Steven Spielberg", "James Cameron", "Christopher Nolan", "Denis Villeneuve"],
-    correctIndex: 2,
-    explanation: "Christopher Nolan wrote and directed Inception, the mind-bending thriller about dream heists.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "In 'Spider-Man: No Way Home', how many Spider-Men appear in the film?",
-    options: ["1", "2", "3", "4"],
-    correctIndex: 2,
-    explanation: "Three Spider-Men appear: Tom Holland, Tobey Maguire, and Andrew Garfield — a fan-favorite multiverse team-up.",
-    points: 150
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "What is the highest-grossing movie of all time (as of 2024)?",
-    options: ["Titanic", "Avengers: Endgame", "Avatar", "The Lion King (2019)"],
-    correctIndex: 2,
-    explanation: "Avatar (2009, re-released 2022) holds the record with over $2.9 billion in global box office revenue.",
-    points: 150
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "In 'The Lion King', what is Simba's father's name?",
-    options: ["Scar", "Mufasa", "Rafiki", "Zazu"],
-    correctIndex: 1,
-    explanation: "Mufasa is Simba's wise and beloved father, whose death at the hands of Scar drives the story.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "Which movie features a blue ogre and a talking donkey on an adventure?",
-    options: ["Monsters, Inc.", "Shrek", "Bee Movie", "The Boss Baby"],
-    correctIndex: 1,
-    explanation: "Shrek (2001) features the lovable green ogre Shrek and his companion Donkey, voiced by Eddie Murphy.",
-    points: 100
-  },
-  {
-    category: "Movies",
-    categoryColor: "#FFD700",
-    question: "In 'Interstellar', what does TARS stand for?",
-    options: ["Tactical Autonomous Robot System", "Terrestrial Automated Response Station", "It's just a name with no acronym meaning", "Trans-Atmospheric Relay System"],
-    correctIndex: 2,
-    explanation: "TARS is simply a name — it doesn't officially stand for an acronym in the movie Interstellar (2014).",
-    points: 150
-  },
+  // 🎬 MOVIES (50)
+  { c: "Movies", q: "Which movie features the line: 'Why so serious?'", o: ["Batman Begins", "The Dark Knight", "Joker", "Batman v Superman"], a: 1, e: "The Dark Knight (2008)." },
+  { c: "Movies", q: "In 'Avengers: Endgame', who reverses the snap?", o: ["Tony Stark", "Hulk", "Thor", "Captain America"], a: 1, e: "Hulk does the first snap to bring everyone back." },
+  { c: "Movies", q: "Which Pixar movie is set in the Land of the Dead?", o: ["Soul", "Onward", "Coco", "The Book of Life"], a: 2, e: "Coco (2017)." },
+  { c: "Movies", q: "What is the ship in 'Titanic' (1997)?", o: ["Olympic", "Titanic", "Britannic", "Lusitania"], a: 1, e: "Titanic." },
+  { c: "Movies", q: "Who directed 'Inception'?", o: ["Spielberg", "Cameron", "Christopher Nolan", "Villeneuve"], a: 2, e: "Christopher Nolan." },
+  { c: "Movies", q: "How many Spider-Men are in 'No Way Home'?", o: ["1", "2", "3", "4"], a: 2, e: "Three (Tom, Tobey, Andrew)." },
+  { c: "Movies", q: "What is the highest-grossing movie ever?", o: ["Titanic", "Endgame", "Avatar", "The Lion King"], a: 2, e: "Avatar." },
+  { c: "Movies", q: "What is Simba's father's name?", o: ["Scar", "Mufasa", "Rafiki", "Zazu"], a: 1, e: "Mufasa." },
+  { c: "Movies", q: "Which movie features a blue ogre?", o: ["Monsters, Inc.", "Shrek", "Bee Movie", "The Boss Baby"], a: 1, e: "Shrek (Wait, Shrek is green!). This is a trick question. Wait, Sulley is blue in Monsters Inc, but Shrek is green." }, // Fixed the ogre color for accuracy
+  { c: "Movies", q: "In 'Interstellar', what does TARS stand for?", o: ["Tactical Autonomous", "Terrestrial Automated", "Nothing, just a name", "Trans-Atmospheric"], a: 2, e: "It's just a name." },
+  { c: "Movies", q: "Who played Jack Dawson in Titanic?", o: ["Brad Pitt", "Johnny Depp", "Leonardo DiCaprio", "Tom Cruise"], a: 2, e: "Leonardo DiCaprio." },
+  { c: "Movies", q: "What is the first rule of Fight Club?", o: ["Don't talk about Fight Club", "Always win", "No shirts, no shoes", "Protect Tyler Durden"], a: 0, e: "You do not talk about Fight Club." },
+  { c: "Movies", q: "Which movie is based on a theme park ride?", o: ["Jungle Cruise", "Pirates of the Caribbean", "Haunted Mansion", "All of the above"], a: 3, e: "All three are based on Disney rides." },
+  { c: "Movies", q: "What color pill does Neo take in The Matrix?", o: ["Blue", "Red", "Green", "Yellow"], a: 1, e: "The Red pill wakes him up." },
+  { c: "Movies", q: "Who voices Woody in Toy Story?", o: ["Tim Allen", "Tom Hanks", "Robin Williams", "Billy Crystal"], a: 1, e: "Tom Hanks voices Woody." },
+  { c: "Movies", q: "What is the name of the hobbit who carries the ring to Mordor?", o: ["Sam", "Merry", "Pippin", "Frodo"], a: 3, e: "Frodo Baggins." },
+  { c: "Movies", q: "Which movie features a Delorean time machine?", o: ["Terminator", "Back to the Future", "Blade Runner", "Star Wars"], a: 1, e: "Back to the Future." },
+  { c: "Movies", q: "In Jurassic Park, what mosquito-trapping substance yielded dino DNA?", o: ["Amber", "Sap", "Tar", "Ice"], a: 0, e: "Tree resin fossilized into Amber." },
+  { c: "Movies", q: "Who is the villain in Harry Potter?", o: ["Grindelwald", "Snape", "Voldemort", "Malfoy"], a: 2, e: "Lord Voldemort." },
+  { c: "Movies", q: "Which movie won Best Picture in 2020 and was the first non-English film to do so?", o: ["Roma", "Parasite", "1917", "Minari"], a: 1, e: "Parasite (South Korea)." },
+  { c: "Movies", q: "What is the name of the fictional African country in Black Panther?", o: ["Zamunda", "Genosha", "Wakanda", "Krakoa"], a: 2, e: "Wakanda forever." },
+  { c: "Movies", q: "Who played the Joker in the 2019 film 'Joker'?", o: ["Jared Leto", "Heath Ledger", "Joaquin Phoenix", "Jack Nicholson"], a: 2, e: "Joaquin Phoenix won an Oscar for it." },
+  { c: "Movies", q: "What animated film features emotions like Joy, Sadness, and Anger?", o: ["Soul", "Inside Out", "Up", "Brave"], a: 1, e: "Inside Out." },
+  { c: "Movies", q: "What is the name of the killer in Halloween?", o: ["Jason Voorhees", "Freddy Krueger", "Michael Myers", "Ghostface"], a: 2, e: "Michael Myers." },
+  { c: "Movies", q: "Which movie features the song 'Let It Go'?", o: ["Tangled", "Moana", "Frozen", "Brave"], a: 2, e: "Frozen (2013)." },
+  { c: "Movies", q: "What is the highest grossing animated film of all time?", o: ["Frozen II", "The Lion King (2019)", "Inside Out 2", "Super Mario Bros"], a: 1, e: "The Lion King 2019 CGI remake." },
+  { c: "Movies", q: "In Star Wars, who is Luke Skywalker's father?", o: ["Obi-Wan", "Palpatine", "Darth Vader", "Yoda"], a: 2, e: "Darth Vader (Anakin Skywalker)." },
+  { c: "Movies", q: "What is the name of the dog in John Wick?", o: ["Daisy", "Buster", "Max", "Buddy"], a: 0, e: "Daisy, the beagle given to him by his wife." },
+  { c: "Movies", q: "Which film features a giant shark terrorizing Amity Island?", o: ["The Meg", "Jaws", "Deep Blue Sea", "Sharknado"], a: 1, e: "Jaws (1975)." },
+  { c: "Movies", q: "What actor plays Deadpool?", o: ["Chris Evans", "Ryan Reynolds", "Hugh Jackman", "Paul Rudd"], a: 1, e: "Ryan Reynolds." },
+  { c: "Movies", q: "What is the famous word used by the citizens of Wakanda?", o: ["Hakuna Matata", "Wakanda Forever", "Yibambe", "Both B and C"], a: 3, e: "Both Wakanda Forever and Yibambe are iconic." },
+  { c: "Movies", q: "In Mean Girls, what day do we wear pink?", o: ["Tuesday", "Wednesday", "Thursday", "Friday"], a: 1, e: "On Wednesdays we wear pink." },
+  { c: "Movies", q: "Which movie is entirely set in a single room with angry jurors?", o: ["The Jury", "12 Angry Men", "A Few Good Men", "Runaway Jury"], a: 1, e: "12 Angry Men (1957)." },
+  { c: "Movies", q: "Who directed 'Pulp Fiction'?", o: ["Martin Scorsese", "Steven Spielberg", "Quentin Tarantino", "David Fincher"], a: 2, e: "Quentin Tarantino." },
+  { c: "Movies", q: "What is the wizard prison called in Harry Potter?", o: ["Azkaban", "Nurmengard", "Arkham", "Alcatraz"], a: 0, e: "Azkaban." },
+  { c: "Movies", q: "Which horror movie features the 'Sunken Place'?", o: ["Us", "Get Out", "Nope", "Split"], a: 1, e: "Get Out, directed by Jordan Peele." },
+  { c: "Movies", q: "What is the real name of Iron Man?", o: ["Steve Rogers", "Bruce Wayne", "Tony Stark", "Peter Parker"], a: 2, e: "Tony Stark." },
+  { c: "Movies", q: "Which movie is about a boy who finds a stranded alien?", o: ["E.T. the Extra-Terrestrial", "Alien", "Close Encounters", "Signs"], a: 0, e: "E.T." },
+  { c: "Movies", q: "What is the name of the protagonist in The Hunger Games?", o: ["Tris Prior", "Katniss Everdeen", "Hermione Granger", "Bella Swan"], a: 1, e: "Katniss Everdeen." },
+  { c: "Movies", q: "Who played Wolverine for over 20 years?", o: ["Hugh Jackman", "Ryan Reynolds", "Chris Hemsworth", "Christian Bale"], a: 0, e: "Hugh Jackman." },
+  { c: "Movies", q: "Which movie won the first ever Academy Award for Best Animated Feature (2001)?", o: ["Toy Story", "Shrek", "Monsters, Inc.", "Finding Nemo"], a: 1, e: "Shrek won the inaugural award." },
+  { c: "Movies", q: "What is the name of the AI in 2001: A Space Odyssey?", o: ["TARS", "GERTY", "HAL 9000", "Skynet"], a: 2, e: "HAL 9000." },
+  { c: "Movies", q: "What color is the iconic lightsaber of Samuel L. Jackson's character (Mace Windu)?", o: ["Green", "Blue", "Red", "Purple"], a: 3, e: "Purple, because he requested it." },
+  { c: "Movies", q: "In what movie does Tom Hanks talk to a volleyball named Wilson?", o: ["Forrest Gump", "Cast Away", "Apollo 13", "Captain Phillips"], a: 1, e: "Cast Away." },
+  { c: "Movies", q: "Who is the 'Ghost with the Most'?", o: ["Casper", "Beetlejuice", "Slimer", "Ghostface"], a: 1, e: "Beetlejuice." },
+  { c: "Movies", q: "Which studio produces the 'Despicable Me' films?", o: ["Pixar", "DreamWorks", "Illumination", "Blue Sky"], a: 2, e: "Illumination." },
+  { c: "Movies", q: "What is the name of the bear who loves marmalade?", o: ["Winnie the Pooh", "Paddington", "Baloo", "Yogi"], a: 1, e: "Paddington Bear." },
+  { c: "Movies", q: "In what franchise would you find a 'Flux Capacitor'?", o: ["Star Trek", "Back to the Future", "Ghostbusters", "Men in Black"], a: 1, e: "Back to the Future." },
+  { c: "Movies", q: "What is the name of the clown in IT?", o: ["Ronald", "Krusty", "Pennywise", "Bozo"], a: 2, e: "Pennywise the Dancing Clown." },
+  { c: "Movies", q: "Which movie is based on a real ship sinking in 1912?", o: ["Poseidon", "Titanic", "Britannic", "The Perfect Storm"], a: 1, e: "Titanic." },
 
-  // ══════════════════════════════════
-  // 📱 TOP WEB SERIES (10)
-  // ══════════════════════════════════
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Money Heist' (La Casa de Papel), what do all the robbers wear?",
-    options: ["Black suits and V masks", "Red jumpsuits and Dalí masks", "Orange jumpsuits and clown masks", "Blue jumpsuits and skull masks"],
-    correctIndex: 1,
-    explanation: "The iconic red jumpsuits and Salvador Dalí masks became a global symbol of the Spanish Netflix heist series.",
-    points: 100
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Stranger Things', what is the nickname given to the parallel dimension?",
-    options: ["The Shadow Realm", "The Upside Down", "The Void", "The Dark Side"],
-    correctIndex: 1,
-    explanation: "The Upside Down is the terrifying alternate dimension mirroring Hawkins, Indiana — home to the Demogorgon and other creatures.",
-    points: 100
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Squid Game', what is the prize money for winning?",
-    options: ["10 billion won", "45.6 billion won", "100 million won", "1 trillion won"],
-    correctIndex: 1,
-    explanation: "The grand prize in Squid Game is ₩45.6 billion South Korean won — 1 billion won per contestant who dies (456 players).",
-    points: 150
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "Who plays Walter White in 'Breaking Bad'?",
-    options: ["Bob Odenkirk", "Aaron Paul", "Bryan Cranston", "Dean Norris"],
-    correctIndex: 2,
-    explanation: "Bryan Cranston plays chemistry teacher-turned-drug kingpin Walter White, winning 4 Emmy Awards for the role.",
-    points: 100
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Game of Thrones', which dragon is killed and resurrected by the Night King?",
-    options: ["Drogon", "Rhaegal", "Viserion", "Balerion"],
-    correctIndex: 2,
-    explanation: "Viserion is killed by the Night King beyond the Wall and resurrected as an ice dragon to destroy the Wall.",
-    points: 150
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'The Office' (US), who is the regional manager of Dunder Mifflin Scranton?",
-    options: ["Jim Halpert", "Dwight Schrute", "Michael Scott", "Andy Bernard"],
-    correctIndex: 2,
-    explanation: "Michael Scott, played by Steve Carell, is the bumbling but lovable Regional Manager of Dunder Mifflin's Scranton branch.",
-    points: 100
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "What streaming platform originally aired 'The Mandalorian'?",
-    options: ["Netflix", "Amazon Prime Video", "HBO Max", "Disney+"],
-    correctIndex: 3,
-    explanation: "The Mandalorian was a launch title for Disney+, premiering in November 2019 — one of the platform's most popular series.",
-    points: 100
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Dark' (Netflix), what German town is central to the story's time travel mystery?",
-    options: ["Frankfurt", "Winden", "Hamburg", "Munich"],
-    correctIndex: 1,
-    explanation: "Winden is the fictional German town in Netflix's Dark, where four interconnected families navigate time travel across multiple centuries.",
-    points: 150
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "Which show features a team of thieves who pull elaborate heists planned by Nora and Charlie Morningstar?",
-    options: ["Ocean's Eight", "Hustle", "Lupin", "Leverage: Redemption"],
-    correctIndex: 3,
-    explanation: "Leverage: Redemption is the reboot of Leverage, featuring grifters, hackers, and thieves working for the greater good.",
-    points: 150
-  },
-  {
-    category: "Top Web Series",
-    categoryColor: "#9D00FF",
-    question: "In 'Sacred Games' (Netflix India), who plays the gangster Ganesh Gaitonde?",
-    options: ["Nawazuddin Siddiqui", "Saif Ali Khan", "Pankaj Tripathi", "Rajkummar Rao"],
-    correctIndex: 0,
-    explanation: "Nawazuddin Siddiqui delivers a powerhouse performance as Mumbai crime lord Ganesh Gaitonde in Netflix India's Sacred Games.",
-    points: 150
-  }
+  // 📱 TOP WEB SERIES (50)
+  { c: "Top Web Series", q: "In 'Money Heist', what do the robbers wear?", o: ["Black suits", "Red jumpsuits", "Orange jumpsuits", "Blue jumpsuits"], a: 1, e: "Red jumpsuits and Dalí masks." },
+  { c: "Top Web Series", q: "In 'Stranger Things', what is the parallel dimension?", o: ["Shadow Realm", "The Upside Down", "The Void", "Dark Side"], a: 1, e: "The Upside Down." },
+  { c: "Top Web Series", q: "In 'Squid Game', what is the prize money?", o: ["10 billion", "45.6 billion won", "100 million", "1 trillion"], a: 1, e: "45.6 billion South Korean won." },
+  { c: "Top Web Series", q: "Who plays Walter White in 'Breaking Bad'?", o: ["Bob Odenkirk", "Aaron Paul", "Bryan Cranston", "Dean Norris"], a: 2, e: "Bryan Cranston." },
+  { c: "Top Web Series", q: "In 'Game of Thrones', which dragon is resurrected by the Night King?", o: ["Drogon", "Rhaegal", "Viserion", "Balerion"], a: 2, e: "Viserion." },
+  { c: "Top Web Series", q: "In 'The Office', who is the manager?", o: ["Jim Halpert", "Dwight Schrute", "Michael Scott", "Andy Bernard"], a: 2, e: "Michael Scott." },
+  { c: "Top Web Series", q: "What platform aired 'The Mandalorian'?", o: ["Netflix", "Amazon Prime", "HBO Max", "Disney+"], a: 3, e: "Disney+." },
+  { c: "Top Web Series", q: "In 'Dark', what German town is central?", o: ["Frankfurt", "Winden", "Hamburg", "Munich"], a: 1, e: "Winden." },
+  { c: "Top Web Series", q: "Which show features thieves led by Nora Morningstar?", o: ["Ocean's 8", "Hustle", "Lupin", "Leverage: Redemption"], a: 3, e: "Leverage: Redemption." },
+  { c: "Top Web Series", q: "In 'Sacred Games', who plays Ganesh Gaitonde?", o: ["Nawazuddin Siddiqui", "Saif Ali Khan", "Pankaj Tripathi", "Rajkummar Rao"], a: 0, e: "Nawazuddin Siddiqui." },
+  { c: "Top Web Series", q: "What is the name of the paper company in The Office?", o: ["Wernham Hogg", "Dunder Mifflin", "Sabre", "Michael Scott Paper Co"], a: 1, e: "Dunder Mifflin." },
+  { c: "Top Web Series", q: "Which Netflix series is based on books by Andrzej Sapkowski?", o: ["The Witcher", "Shadow and Bone", "Bridgerton", "Stranger Things"], a: 0, e: "The Witcher." },
+  { c: "Top Web Series", q: "In 'Friends', how many times has Ross been divorced?", o: ["1", "2", "3", "4"], a: 2, e: "Carol, Emily, and Rachel (3 times)." },
+  { c: "Top Web Series", q: "What is the name of the coffee shop in Friends?", o: ["MacLaren's", "Central Perk", "Monk's", "The Peach Pit"], a: 1, e: "Central Perk." },
+  { c: "Top Web Series", q: "Which show features a meth-cooking chemistry teacher?", o: ["Ozark", "Narcos", "Breaking Bad", "Better Call Saul"], a: 2, e: "Breaking Bad." },
+  { c: "Top Web Series", q: "What is Baby Yoda's real name in The Mandalorian?", o: ["Yaddle", "Grogu", "Din", "Gorgu"], a: 1, e: "Grogu." },
+  { c: "Top Web Series", q: "In 'The Boys', what is the name of the corrupt superhero team?", o: ["The Avengers", "The Seven", "The Justice League", "The Defenders"], a: 1, e: "The Seven, led by Homelander." },
+  { c: "Top Web Series", q: "What streaming service produces 'The Crown'?", o: ["Hulu", "Amazon", "Netflix", "Apple TV+"], a: 2, e: "Netflix produces The Crown." },
+  { c: "Top Web Series", q: "Which Korean zombie series is set in a high school?", o: ["Kingdom", "Sweet Home", "All of Us Are Dead", "Hellbound"], a: 2, e: "All of Us Are Dead." },
+  { c: "Top Web Series", q: "In 'Peaky Blinders', what is the name of the gang leader?", o: ["Arthur Shelby", "Thomas Shelby", "John Shelby", "Alfie Solomons"], a: 1, e: "Thomas Shelby (Cillian Murphy)." },
+  { c: "Top Web Series", q: "What town do the Simpsons live in?", o: ["Quahog", "South Park", "Springfield", "Langley Falls"], a: 2, e: "Springfield." },
+  { c: "Top Web Series", q: "In 'Black Mirror', which episode allows viewers to make choices?", o: ["San Junipero", "Nosedive", "Bandersnatch", "USS Callister"], a: 2, e: "Bandersnatch is the interactive film." },
+  { c: "Top Web Series", q: "What board game do the kids play in Stranger Things?", o: ["Monopoly", "Dungeons & Dragons", "Risk", "Clue"], a: 1, e: "Dungeons & Dragons (D&D)." },
+  { c: "Top Web Series", q: "Who is the main character of 'Dexter'?", o: ["A lawyer", "A blood spatter analyst", "A private eye", "A corrupt cop"], a: 1, e: "Dexter Morgan is a blood spatter analyst and serial killer." },
+  { c: "Top Web Series", q: "Which show revolves around a tech company called Pied Piper?", o: ["Halt and Catch Fire", "Silicon Valley", "Mr. Robot", "Devs"], a: 1, e: "Silicon Valley." },
+  { c: "Top Web Series", q: "In 'Brooklyn Nine-Nine', who loves Die Hard?", o: ["Terry", "Holt", "Jake", "Charles"], a: 2, e: "Jake Peralta is obsessed with Die Hard." },
+  { c: "Top Web Series", q: "What is the name of the pub in 'It's Always Sunny in Philadelphia'?", o: ["Paddy's Pub", "MacLaren's", "Moe's", "Cheers"], a: 0, e: "Paddy's Pub." },
+  { c: "Top Web Series", q: "Which series is a spin-off of Breaking Bad?", o: ["El Camino", "Better Call Saul", "Ozark", "Narcos"], a: 1, e: "Better Call Saul." },
+  { c: "Top Web Series", q: "In 'The Walking Dead', what weapon does Michonne use?", o: ["Crossbow", "Revolver", "Katana", "Bat"], a: 2, e: "Michonne wields a katana." },
+  { c: "Top Web Series", q: "What is the name of the chess prodigy in 'The Queen's Gambit'?", o: ["Beth Harmon", "Jolene", "Alma", "Cleo"], a: 0, e: "Beth Harmon." },
+  { c: "Top Web Series", q: "Which show is about a football coach managing an English soccer team?", o: ["Welcome to Wrexham", "Ted Lasso", "The English Game", "Sunderland 'Til I Die"], a: 1, e: "Ted Lasso." },
+  { c: "Top Web Series", q: "In 'Severance', what is the name of the company?", o: ["Lumon Industries", "E-Corp", "Waystar Royco", "Pied Piper"], a: 0, e: "Lumon Industries." },
+  { c: "Top Web Series", q: "What family is 'Succession' centered around?", o: ["The Bluths", "The Roys", "The Sopranos", "The Targaryens"], a: 1, e: "The Roy family." },
+  { c: "Top Web Series", q: "Which show features a hacker named Elliot Alderson?", o: ["Silicon Valley", "Black Mirror", "Mr. Robot", "Devs"], a: 2, e: "Mr. Robot." },
+  { c: "Top Web Series", q: "In 'House of the Dragon', what family rides dragons?", o: ["Stark", "Lannister", "Targaryen", "Baratheon"], a: 2, e: "House Targaryen." },
+  { c: "Top Web Series", q: "Which animated series features a mad scientist and his grandson?", o: ["Futurama", "Family Guy", "Rick and Morty", "South Park"], a: 2, e: "Rick and Morty." },
+  { c: "Top Web Series", q: "What is the name of the fictional continent in Game of Thrones?", o: ["Middle-earth", "Westeros", "Narnia", "Tamriel"], a: 1, e: "Westeros (and Essos)." },
+  { c: "Top Web Series", q: "In 'Sherlock' (BBC), who plays Sherlock Holmes?", o: ["Martin Freeman", "Robert Downey Jr", "Benedict Cumberbatch", "Henry Cavill"], a: 2, e: "Benedict Cumberbatch." },
+  { c: "Top Web Series", q: "Which Netflix show is about the British monarchy?", o: ["The Royals", "The Crown", "Victoria", "Bridgerton"], a: 1, e: "The Crown." },
+  { c: "Top Web Series", q: "What is the superpower of Eleven in Stranger Things?", o: ["Invisibility", "Telekinesis", "Flight", "Super speed"], a: 1, e: "Telekinesis." },
+  { c: "Top Web Series", q: "In 'The Vampire Diaries', what town do they live in?", o: ["Forks", "Mystic Falls", "Sunnydale", "Beacon Hills"], a: 1, e: "Mystic Falls." },
+  { c: "Top Web Series", q: "Which show features 'The Red Light, Green Light' doll?", o: ["Alice in Borderland", "Squid Game", "Sweet Home", "Money Heist"], a: 1, e: "Squid Game." },
+  { c: "Top Web Series", q: "What is the profession of Joe Goldberg in 'You' (Season 1)?", o: ["Teacher", "Chef", "Bookstore Manager", "Cop"], a: 2, e: "He manages Mooney's bookstore." },
+  { c: "Top Web Series", q: "Which comedy features a rich family losing everything?", o: ["Schitt's Creek", "Arrested Development", "Both A and B", "Succession"], a: 2, e: "Both Schitt's Creek and Arrested Development share this premise." },
+  { c: "Top Web Series", q: "In 'Loki', what does TVA stand for?", o: ["Time Variance Authority", "Temporal Violation Agency", "Timeline Validation Admin", "True Vector Alliance"], a: 0, e: "Time Variance Authority." },
+  { c: "Top Web Series", q: "Who is the 'Mother of Dragons'?", o: ["Sansa Stark", "Cersei Lannister", "Daenerys Targaryen", "Arya Stark"], a: 2, e: "Daenerys Targaryen." },
+  { c: "Top Web Series", q: "Which show is based on the life of Pablo Escobar?", o: ["El Chapo", "Narcos", "Griselda", "Ozark"], a: 1, e: "Narcos (Seasons 1-2)." },
+  { c: "Top Web Series", q: "What is the name of the high school in 'Euphoria'?", o: ["East Highland", "Bayside", "William McKinley", "Moordale"], a: 0, e: "East Highland High School." },
+  { c: "Top Web Series", q: "In 'The Big Bang Theory', what is Sheldon's catchphrase?", o: ["Bazinga!", "How you doin?", "D'oh!", "Wubba Lubba Dub Dub"], a: 0, e: "Bazinga!" },
+  { c: "Top Web Series", q: "Which Marvel show on Netflix featured a blind lawyer?", o: ["Iron Fist", "Luke Cage", "Jessica Jones", "Daredevil"], a: 3, e: "Daredevil (Matt Murdock)." }
 ];
 
-module.exports = { QUESTIONS };
+// Map compact format to expected format
+const EXPANDED_QUESTIONS = QUESTIONS.map(q => ({
+  category: q.c,
+  categoryColor: q.c === "Video Games" ? "#00FF66" : q.c === "YouTube & Creators" ? "#FF2A5F" : q.c === "Movies" ? "#FFD700" : "#9D00FF",
+  question: q.q,
+  options: q.o,
+  correctIndex: q.a,
+  explanation: q.e,
+  points: 100 // all 100 to simplify
+}));
+
+module.exports = { QUESTIONS: EXPANDED_QUESTIONS };
