@@ -279,9 +279,24 @@ export function LandingView({ onHost, onJoin }) {
       </div>
 
       {/* ══ FOOTER ══ */}
-      <div style={{ background: '#000', padding: '1.5rem', textAlign: 'center', borderTop: '1px solid #1a1a1a' }}>
-        <p style={{ color: '#333', fontWeight: 800, fontSize: '0.8rem' }}>
-          QUIZMANIA © 2026 — Not responsible for friendships destroyed during trivia night.
+      <div style={{ background: '#080808', padding: '2rem 1.5rem', textAlign: 'center', borderTop: '1px solid #1a1a1a', fontFamily: "'Nunito', sans-serif" }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+          {[
+            { label: "About", url: "#/about" },
+            { label: "Contact Us", url: "#/contact-us" },
+            { label: "Privacy Policy", url: "#/privacy-policy" },
+            { label: "Cookie Declaration", url: "#/cookie-declaration" },
+            { label: "Legal", url: "#/legal" }
+          ].map(l => (
+            <a key={l.label} href={l.url} style={{ color: '#555', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 800, transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#ccc'}
+              onMouseLeave={e => e.currentTarget.style.color = '#555'}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+        <p style={{ color: '#333', fontWeight: 800, fontSize: '0.75rem', margin: 0 }}>
+          © 2026 QuizMania. All rights reserved. Play responsively.
         </p>
       </div>
     </div>

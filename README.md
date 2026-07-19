@@ -19,6 +19,7 @@ All players join the same room and play as a **team**. Everyone sees the same qu
 - 👁️ **Spectator Votes** — Non-host players select an option; their vote count is visible to the host.
 - 🔄 **Play Again** — Host can restart with the same room after a game ends.
 - 🖱️ **Custom Cursor** — HiveMind-style animated cursor throughout.
+- ⚖️ **AdSense & GDPR Compliance** — Integrated Cookie Consent Banner, Privacy Policy, Terms of Service, Legal, and Contact Us pages to ensure smooth Google AdSense verification.
 
 ---
 
