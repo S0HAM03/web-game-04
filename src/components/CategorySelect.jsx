@@ -6,7 +6,8 @@ const CATEGORIES = [
   { id: 'Movies',             emoji: '🎬', label: 'Movies',             desc: '20 questions about cinema', count: 20 },
   { id: 'Top Web Series',     emoji: '📱', label: 'Top Web Series',     desc: '20 questions about shows',  count: 20 },
   { id: 'Anime & Manga',      emoji: '🏮', label: 'Anime & Manga',      desc: '20 questions about anime',  count: 20 },
-  { id: 'Tech & Internet Culture', emoji: '💻', label: 'Tech & Internet', desc: '20 questions about tech',  count: 20 },
+  { id: 'Tech & Programming', emoji: '💻', label: 'Tech & Programming', desc: '20 questions about coding', count: 20 },
+  { id: 'Internet Culture',   emoji: '🌐', label: 'Internet Culture',   desc: '20 questions about memes',  count: 20 },
   { id: 'General Knowledge',  emoji: '🧠', label: 'General Knowledge',  desc: '20 questions about trivia', count: 20 },
 ];
 

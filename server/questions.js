@@ -7,6 +7,7 @@ const ws = Array.from({ length: 50 }).map((_, i) => ({ category: "Top Web Series
 const { ANIME_QUESTIONS } = require('./questions/anime');
 const { TECH_QUESTIONS } = require('./questions/tech');
 const { GK_QUESTIONS } = require('./questions/gk');
+const { INTERNET_QUESTIONS } = require('./questions/internet');
 
 const QUESTIONS = [
   // 🎮 VIDEO GAMES (50)
@@ -234,7 +235,8 @@ const ALL_QUESTIONS = [
   ...EXPANDED_QUESTIONS,
   ...ANIME_QUESTIONS,
   ...TECH_QUESTIONS,
-  ...GK_QUESTIONS
+  ...GK_QUESTIONS,
+  ...INTERNET_QUESTIONS
 ];
 
 module.exports = { QUESTIONS: ALL_QUESTIONS };
