@@ -3,10 +3,14 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const { QUESTIONS } = require('./questions');
 
 const app = express();
 app.use(cors());
+
+// Serve static frontend files in production
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -319,6 +323,11 @@ io.on('connection', (socket) => {
       break;
     }
   });
+});
+
+// Catch-all route to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 const PORT = process.env.PORT || 3001;
