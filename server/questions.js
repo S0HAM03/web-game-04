@@ -4,6 +4,10 @@ const mv = Array.from({ length: 50 }).map((_, i) => ({ category: "Movies", categ
 const ws = Array.from({ length: 50 }).map((_, i) => ({ category: "Top Web Series", categoryColor: "#9D00FF", points: 100 }));
 
 // To save space, we'll populate them manually in a compact way
+const { ANIME_QUESTIONS } = require('./questions/anime');
+const { TECH_QUESTIONS } = require('./questions/tech');
+const { GK_QUESTIONS } = require('./questions/gk');
+
 const QUESTIONS = [
   // 🎮 VIDEO GAMES (50)
   { c: "Video Games", q: "Which game features a battle royale mode called 'Warzone'?", o: ["Fortnite", "PUBG", "Call of Duty", "Apex Legends"], a: 2, e: "Call of Duty: Warzone is the free-to-play battle royale mode." },
@@ -226,4 +230,11 @@ const EXPANDED_QUESTIONS = QUESTIONS.map(q => ({
   points: 100 // all 100 to simplify
 }));
 
-module.exports = { QUESTIONS: EXPANDED_QUESTIONS };
+const ALL_QUESTIONS = [
+  ...EXPANDED_QUESTIONS,
+  ...ANIME_QUESTIONS,
+  ...TECH_QUESTIONS,
+  ...GK_QUESTIONS
+];
+
+module.exports = { QUESTIONS: ALL_QUESTIONS };

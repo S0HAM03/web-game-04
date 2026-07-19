@@ -5,6 +5,7 @@ import { LandingView, JoinSetupView, HostSetupView, LobbyView, AnimatedCursor } 
 import CategorySelect from './components/CategorySelect';
 import QuizGame from './components/QuizGame';
 import GameOver from './components/GameOver';
+import { playGameOver } from './utils/sfx';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || '';
 
@@ -58,6 +59,7 @@ function App() {
 
     s.on('game_over', (data) => {
       setGameOverData(data); setView('game_over');
+      playGameOver();
     });
 
     s.on('back_to_lobby', () => {

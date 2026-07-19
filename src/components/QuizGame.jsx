@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChunkyButton } from './UI';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Image as ImageIcon, Volume2 } from 'lucide-react';
+import { playClick, playCorrect, playWrong } from '../utils/sfx';
 
 /* ═══════════════════════════════════════
    TIMERS
@@ -74,6 +75,8 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
     socket.on('answer_result', (data) => {
       setResult(data);
       setTeamScore(data.teamScore);
+      if (data.correct) playCorrect();
+      else playWrong();
     });
 
     socket.on('spectator_voted', ({ playerId, answerIndex }) => {
@@ -94,6 +97,7 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
     if (result) return;
     if (!question) return;
 
+    playClick();
     setSelectedIdx(idx);
 
     if (!isHost) {
@@ -105,6 +109,7 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
   /* ── Lock Answer (host only) ─────────── */
   const handleLockAnswer = () => {
     if (!isHost || submitted || selectedIdx === null || result) return;
+    playClick();
     setSubmitted(true);
     socket.emit('submit_answer', { roomCode, answerIndex: selectedIdx });
   };
@@ -112,6 +117,7 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
   /* ── Next Question (host only) ───────── */
   const handleNextQuestion = () => {
     if (!isHost || !result) return;
+    playClick();
     socket.emit('next_question', { roomCode });
   };
 
@@ -253,6 +259,22 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
             background: '#161616', border: '1px solid #222',
             borderRadius: 10, padding: '1.75rem 2rem',
           }}>
+            {question.imageUrl && (
+              <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+                <img 
+                  src={question.imageUrl} 
+                  alt="Clue" 
+                  style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8, objectFit: 'contain', border: '1px solid #333' }} 
+                />
+              </div>
+            )}
+            {question.audioUrl && (
+              <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#0d0d0d', padding: '1rem', borderRadius: 8, border: '1px solid #333' }}>
+                <Volume2 size={24} color="#4A9EFF" style={{ marginBottom: '0.5rem' }}/>
+                <span style={{ fontSize: '0.75rem', color: '#888', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: 1 }}>AUDIO CLUE</span>
+                <audio controls src={question.audioUrl} style={{ height: 35, width: '100%', maxWidth: 300 }} />
+              </div>
+            )}
             <p style={{
               fontFamily: "'Nunito', sans-serif",
               fontWeight: 800,
