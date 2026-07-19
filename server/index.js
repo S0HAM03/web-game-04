@@ -58,7 +58,7 @@ function broadcastPlayerList(roomCode) {
   io.to(roomCode).emit('player_list', getPlayerList(roomCode));
 }
 
-function getPublicQuestion(q, index, total) {
+function getPublicQuestion(q, index, total, gameStartTime) {
   return {
     index,
     total,
@@ -66,7 +66,8 @@ function getPublicQuestion(q, index, total) {
     options: q.options,
     category: q.category,
     categoryColor: q.categoryColor,
-    points: q.points
+    points: q.points,
+    gameStartTime
   };
 }
 
@@ -84,7 +85,7 @@ function startQuestion(roomCode) {
   const q = room.questions[qi];
 
   // Emit question to all players
-  io.to(roomCode).emit('question', getPublicQuestion(q, qi + 1, room.questions.length));
+  io.to(roomCode).emit('question', getPublicQuestion(q, qi + 1, room.questions.length, room.gameStartTime));
 }
 
 function handleAnswer(roomCode, answerIndex) {

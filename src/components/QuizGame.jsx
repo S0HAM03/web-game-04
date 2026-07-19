@@ -3,8 +3,26 @@ import { ChunkyButton } from './UI';
 import { ArrowRight } from 'lucide-react';
 
 /* ═══════════════════════════════════════
-   STOPWATCH HOOK
+   TIMERS
 ═══════════════════════════════════════ */
+function useTimer(timeLimit, active) {
+  const [timeLeft, setTimeLeft] = useState(timeLimit);
+  const startRef = useRef(Date.now());
+
+  useEffect(() => {
+    setTimeLeft(timeLimit);
+    if (!active) return;
+    startRef.current = Date.now();
+    const iv = setInterval(() => {
+      const elapsed = (Date.now() - startRef.current) / 1000;
+      setTimeLeft(Math.max(0, timeLimit - elapsed));
+    }, 100);
+    return () => clearInterval(iv);
+  }, [active, timeLimit]);
+
+  return Math.ceil(timeLeft);
+}
+
 function useStopwatch(startTime) {
   const [elapsed, setElapsed] = useState(0);
 
@@ -35,7 +53,10 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
   const [teamScore, setTeamScore]     = useState(0);
   const [submitted, setSubmitted]     = useState(false);
 
-  const timeString = useStopwatch(gameStartTime);
+  const activeGameStartTime = question?.gameStartTime || gameStartTime;
+  const timeString = useStopwatch(activeGameStartTime);
+  
+  const revealTimeLeft = useTimer(15, !!result);
 
   /* ── Socket events ─────────────────────── */
   useEffect(() => {
@@ -313,10 +334,13 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
           )}
 
           {result && isHost && (
-             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.25rem', animation: 'fadeIn 0.3s ease' }}>
+             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.25rem', animation: 'fadeIn 0.3s ease' }}>
                 <ChunkyButton color="#4A9EFF" onClick={handleNextQuestion} style={{ padding: '0.6rem 2rem', border: '2px solid #fff', fontSize: '0.85rem' }}>
                   Next Question <ArrowRight size={16}/>
                 </ChunkyButton>
+                <span style={{ marginTop: '0.75rem', fontFamily: "'Nunito'", fontWeight: 800, fontSize: '0.78rem', color: '#666', letterSpacing: 1 }}>
+                  Auto-advancing in {revealTimeLeft}s...
+                </span>
              </div>
           )}
 
@@ -331,9 +355,9 @@ export default function QuizGame({ socket, roomCode, isHost, players, gameStartT
           )}
 
           {!isHost && result && (
-             <div style={{ textAlign: 'center', marginTop: '0.5rem', animation: 'pulseHard 1.5s infinite' }}>
+             <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
                 <span style={{ fontFamily: "'Nunito'", fontWeight: 800, fontSize: '0.78rem', color: '#555', letterSpacing: 1 }}>
-                  Waiting for host to continue (or 15s auto-skip)...
+                  Waiting for host to continue (or <span style={{ color: '#4A9EFF' }}>{revealTimeLeft}s</span> auto-skip)...
                 </span>
              </div>
           )}
