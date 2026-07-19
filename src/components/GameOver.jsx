@@ -70,9 +70,13 @@ function RecapCard({ qData, answer, index }) {
    GAME OVER SCREEN
 ═══════════════════════════════════════ */
 export default function GameOver({ data, isHost, players, onPlayAgain }) {
-  const { teamScore, totalPossible, answers, questions } = data;
+  const { teamScore, totalPossible, totalTimeTaken, answers, questions } = data;
   const pct = totalPossible > 0 ? Math.round((teamScore / totalPossible) * 100) : 0;
   const correct = answers.filter(a => a.correct).length;
+
+  const mins = Math.floor((totalTimeTaken || 0) / 60);
+  const secs = (totalTimeTaken || 0) % 60;
+  const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}`;
 
   const getRating = () => {
     if (pct >= 90) return { label: 'LEGENDARY', emoji: '🏆', color: '#FFD43B' };
@@ -114,6 +118,10 @@ export default function GameOver({ data, isHost, players, onPlayAgain }) {
           <div style={{ background: '#111', border: '1px solid #2a2a2a', borderRadius: 10, padding: '1.25rem 2rem', textAlign: 'center' }}>
             <div style={{ fontSize: '0.65rem', color: '#555', fontWeight: 900, letterSpacing: 2, marginBottom: 6 }}>CORRECT</div>
             <div className="display-font" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: '#51CF66', lineHeight: 1 }}>{correct}/{answers.length}</div>
+          </div>
+          <div style={{ background: '#111', border: '1px solid #2a2a2a', borderRadius: 10, padding: '1.25rem 2rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '0.65rem', color: '#555', fontWeight: 900, letterSpacing: 2, marginBottom: 6 }}>TOTAL TIME</div>
+            <div className="display-font" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: '#CC5DE8', lineHeight: 1 }}>{formattedTime}</div>
           </div>
         </div>
 

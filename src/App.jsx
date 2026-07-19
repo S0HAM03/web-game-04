@@ -20,6 +20,7 @@ function App() {
   const [isHost, setIsHost]           = useState(false);
   const [myId, setMyId]               = useState(null);
   const [gameOverData, setGameOverData] = useState(null);
+  const [gameStartTime, setGameStartTime] = useState(null);
 
   /* ── Socket setup ─────────────────────── */
   useEffect(() => {
@@ -50,7 +51,8 @@ function App() {
       setView('category_select');
     });
 
-    s.on('game_started', () => {
+    s.on('game_started', ({ gameStartTime }) => {
+      setGameStartTime(gameStartTime);
       setView('quiz');
     });
 
@@ -104,7 +106,7 @@ function App() {
     if (view === 'join_setup')      return <JoinSetupView onBack={() => setView('landing')} onEnter={handleJoin} error={lobbyError}/>;
     if (view === 'lobby')           return <LobbyView roomCode={roomCode} players={activePlayers} onBack={handleLeave} onStart={isHost ? handleRequestCategory : undefined}/>;
     if (view === 'category_select') return <CategorySelect isHost={isHost} onSelect={handleCategorySelect}/>;
-    if (view === 'quiz')            return <QuizGame socket={socket} roomCode={roomCode} isHost={isHost} players={activePlayers} myId={myId}/>;
+    if (view === 'quiz')            return <QuizGame socket={socket} roomCode={roomCode} isHost={isHost} players={activePlayers} myId={myId} gameStartTime={gameStartTime}/>;
     if (view === 'game_over')       return <GameOver data={gameOverData} isHost={isHost} players={activePlayers} onPlayAgain={handlePlayAgain}/>;
     return null;
   };

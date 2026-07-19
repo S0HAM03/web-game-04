@@ -29,8 +29,7 @@ const io = new Server(server, {
 const rooms = {};
 
 const QUESTIONS_PER_GAME = 15;
-const QUESTION_TIME = 20; // seconds
-const REVEAL_DURATION = 3500; // ms to show result before next question
+const REVEAL_DURATION = 15000; // ms to show result before auto-next
 
 // ── Helpers ────────────────────────────────────────
 function generateRoomCode() {
@@ -67,8 +66,7 @@ function getPublicQuestion(q, index, total) {
     options: q.options,
     category: q.category,
     categoryColor: q.categoryColor,
-    points: q.points,
-    timeLimit: QUESTION_TIME
+    points: q.points
   };
 }
 
@@ -87,30 +85,21 @@ function startQuestion(roomCode) {
 
   // Emit question to all players
   io.to(roomCode).emit('question', getPublicQuestion(q, qi + 1, room.questions.length));
-
-  // Auto-expire timer on server
-  room.timer = setTimeout(() => {
-    // Time ran out — treat as wrong answer
-    handleAnswer(roomCode, -1, true); // -1 = no answer / timed out
-  }, QUESTION_TIME * 1000 + 500); // +500ms buffer
 }
 
-function handleAnswer(roomCode, answerIndex, timedOut = false) {
+function handleAnswer(roomCode, answerIndex) {
   const room = rooms[roomCode];
   if (!room || room.state !== 'playing') return;
-
-  // Clear the auto-expire timer
-  if (room.timer) { clearTimeout(room.timer); room.timer = null; }
 
   room.state = 'reveal';
 
   const qi = room.currentQuestionIndex;
   const q = room.questions[qi];
-  const correct = !timedOut && answerIndex === q.correctIndex;
+  const correct = answerIndex === q.correctIndex;
   const pointsEarned = correct ? q.points : 0;
 
   room.teamScore += pointsEarned;
-  room.answers.push({ questionIndex: qi, answerIndex, correct, pointsEarned, timedOut });
+  room.answers.push({ questionIndex: qi, answerIndex, correct, pointsEarned });
 
   // Emit result to everyone
   io.to(roomCode).emit('answer_result', {
@@ -119,19 +108,28 @@ function handleAnswer(roomCode, answerIndex, timedOut = false) {
     chosenIndex: answerIndex,
     explanation: q.explanation,
     pointsEarned,
-    teamScore: room.teamScore,
-    timedOut
+    teamScore: room.teamScore
   });
 
-  // Auto-advance after reveal duration
+  // Auto-advance after 15 seconds
   room.timer = setTimeout(() => {
-    room.currentQuestionIndex++;
-    if (room.currentQuestionIndex >= room.questions.length) {
-      endGame(roomCode);
-    } else {
-      startQuestion(roomCode);
-    }
+    room.timer = null;
+    advanceToNextQuestion(roomCode);
   }, REVEAL_DURATION);
+}
+
+function advanceToNextQuestion(roomCode) {
+  const room = rooms[roomCode];
+  if (!room || room.state !== 'reveal') return;
+
+  if (room.timer) { clearTimeout(room.timer); room.timer = null; }
+
+  room.currentQuestionIndex++;
+  if (room.currentQuestionIndex >= room.questions.length) {
+    endGame(roomCode);
+  } else {
+    startQuestion(roomCode);
+  }
 }
 
 function endGame(roomCode) {
@@ -140,9 +138,12 @@ function endGame(roomCode) {
   room.state = 'game_over';
   if (room.timer) { clearTimeout(room.timer); room.timer = null; }
 
+  const totalTimeTaken = room.gameStartTime ? Math.floor((Date.now() - room.gameStartTime) / 1000) : 0;
+
   io.to(roomCode).emit('game_over', {
     teamScore: room.teamScore,
     totalPossible: room.totalPossible,
+    totalTimeTaken,
     answers: room.answers,
     questions: room.questions.map(q => ({
       question: q.question,
@@ -224,8 +225,9 @@ io.on('connection', (socket) => {
     room.teamScore = 0;
     room.answers = [];
     room.selectedCategory = category;
+    room.gameStartTime = Date.now();
 
-    io.to(roomCode).emit('game_started', { category });
+    io.to(roomCode).emit('game_started', { category, gameStartTime: room.gameStartTime });
     // Small delay then first question
     setTimeout(() => startQuestion(roomCode), 1500);
   });
@@ -238,6 +240,16 @@ io.on('connection', (socket) => {
     if (room.state !== 'playing') return;
 
     handleAnswer(roomCode, answerIndex);
+  });
+
+  // — Request Next Question (host only) —
+  socket.on('next_question', ({ roomCode }) => {
+    const room = rooms[roomCode];
+    if (!room) return;
+    if (!room.players.find(p => p.id === socket.id)?.isHost) return; // only host
+    if (room.state !== 'reveal') return; // only valid during reveal state
+
+    advanceToNextQuestion(roomCode);
   });
 
   // — Spectator Highlight (non-host, visual only) —
@@ -264,6 +276,7 @@ io.on('connection', (socket) => {
     room.teamScore = 0;
     room.totalPossible = 0;
     room.answers = [];
+    room.gameStartTime = null;
     if (room.timer) { clearTimeout(room.timer); room.timer = null; }
 
     io.to(roomCode).emit('back_to_lobby');

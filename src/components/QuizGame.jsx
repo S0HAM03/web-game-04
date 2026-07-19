@@ -1,121 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
+import { ChunkyButton } from './UI';
+import { ArrowRight } from 'lucide-react';
 
 /* ═══════════════════════════════════════
-   TIMER HOOK
+   STOPWATCH HOOK
 ═══════════════════════════════════════ */
-function useTimer(timeLimit, active) {
-  const [timeLeft, setTimeLeft] = useState(timeLimit);
-  const startRef = useRef(Date.now());
+function useStopwatch(startTime) {
+  const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
-    setTimeLeft(timeLimit);
-    if (!active) return;
-    startRef.current = Date.now();
+    if (!startTime) return;
     const iv = setInterval(() => {
-      const elapsed = (Date.now() - startRef.current) / 1000;
-      setTimeLeft(Math.max(0, timeLimit - elapsed));
-    }, 100);
+      setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+    // Initial set
+    setElapsed(Math.floor((Date.now() - startTime) / 1000));
     return () => clearInterval(iv);
-  }, [active, timeLimit]);
+  }, [startTime]);
 
-  return timeLeft;
-}
-
-/* ═══════════════════════════════════════
-   ANSWER REVEAL — simple dark overlay
-═══════════════════════════════════════ */
-function AnswerReveal({ result, question }) {
-  const { correct, timedOut, explanation, pointsEarned, teamScore, correctIndex, chosenIndex } = result;
-  const correctText = question?.options?.[correctIndex] ?? '';
-  const chosenText  = question?.options?.[chosenIndex]  ?? '';
-
-  return (
-    <div style={{
-      position: 'absolute', inset: 0, zIndex: 60,
-      background: 'rgba(0,0,0,0.93)',
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      padding: '2rem',
-      animation: 'fadeIn 0.25s ease-out',
-    }}>
-      {/* Status */}
-      <div style={{
-        fontSize: '4rem', lineHeight: 1, marginBottom: '1rem',
-        animation: 'revealIn 0.35s ease-out',
-      }}>
-        {timedOut ? '⏰' : correct ? '✅' : '❌'}
-      </div>
-
-      <h2 style={{
-        fontFamily: "'Nunito', sans-serif",
-        fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
-        fontWeight: 900,
-        color: timedOut ? '#FFD43B' : correct ? '#51CF66' : '#FF6B6B',
-        marginBottom: '1.5rem',
-        textAlign: 'center',
-      }}>
-        {timedOut ? "Time's Up!" : correct ? 'Correct!' : 'Wrong!'}
-      </h2>
-
-      {/* Correct answer banner (when wrong) */}
-      {!correct && !timedOut && (
-        <div style={{
-          background: '#161616', border: '1px solid #51CF66',
-          borderRadius: 8, padding: '0.6rem 1.5rem',
-          marginBottom: '1rem',
-          animation: 'slideUp 0.3s 0.1s both',
-        }}>
-          <span style={{ color: '#888', fontSize: '0.75rem', fontWeight: 900, letterSpacing: 1 }}>CORRECT ANSWER  </span>
-          <span style={{ color: '#51CF66', fontWeight: 900, fontSize: '0.95rem' }}>{correctText}</span>
-        </div>
-      )}
-      {timedOut && (
-        <div style={{
-          background: '#161616', border: '1px solid #51CF66',
-          borderRadius: 8, padding: '0.6rem 1.5rem',
-          marginBottom: '1rem',
-          animation: 'slideUp 0.3s 0.1s both',
-        }}>
-          <span style={{ color: '#888', fontSize: '0.75rem', fontWeight: 900, letterSpacing: 1 }}>CORRECT ANSWER  </span>
-          <span style={{ color: '#51CF66', fontWeight: 900, fontSize: '0.95rem' }}>{correctText}</span>
-        </div>
-      )}
-
-      {/* Explanation */}
-      <div style={{
-        background: '#111', border: '1px solid #222',
-        borderRadius: 10, padding: '1.25rem 1.5rem',
-        maxWidth: 520, width: '100%',
-        animation: 'slideUp 0.3s 0.2s both',
-      }}>
-        <p style={{ color: '#aaa', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1.65, margin: 0, fontFamily: "'Nunito'" }}>
-          {explanation}
-        </p>
-      </div>
-
-      {/* Points + team score */}
-      <div style={{ display: 'flex', gap: '1.25rem', marginTop: '1.5rem', animation: 'slideUp 0.3s 0.3s both', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <div style={{ background: '#161616', border: `1px solid ${correct ? '#51CF66' : '#333'}`, borderRadius: 8, padding: '0.75rem 1.5rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.65rem', color: '#555', fontWeight: 900, letterSpacing: 2, marginBottom: 4 }}>POINTS</div>
-          <div className="display-font" style={{ fontSize: '1.5rem', color: correct ? '#51CF66' : '#555' }}>+{pointsEarned}</div>
-        </div>
-        <div style={{ background: '#161616', border: '1px solid #4A9EFF', borderRadius: 8, padding: '0.75rem 1.5rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.65rem', color: '#555', fontWeight: 900, letterSpacing: 2, marginBottom: 4 }}>TEAM SCORE</div>
-          <div className="display-font" style={{ fontSize: '1.5rem', color: '#4A9EFF' }}>{teamScore}</div>
-        </div>
-      </div>
-
-      <p style={{ marginTop: '1.5rem', color: '#333', fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2 }}>
-        Next question loading...
-      </p>
-    </div>
-  );
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 /* ═══════════════════════════════════════
    MAIN QUIZ GAME
 ═══════════════════════════════════════ */
-export default function QuizGame({ socket, roomCode, isHost, players }) {
+export default function QuizGame({ socket, roomCode, isHost, players, gameStartTime }) {
   const [question, setQuestion]       = useState(null);
   const [result, setResult]           = useState(null);
   const [selectedIdx, setSelectedIdx] = useState(null); // this player's pick
@@ -123,12 +34,8 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
   const [spectatorVotes, setSpectatorVotes] = useState({});
   const [teamScore, setTeamScore]     = useState(0);
   const [submitted, setSubmitted]     = useState(false);
-  const [timerKey, setTimerKey]       = useState(0);
 
-  const timeLeft = useTimer(
-    question?.timeLimit ?? 20,
-    !!(question && !result && !submitted)
-  );
+  const timeString = useStopwatch(gameStartTime);
 
   /* ── Socket events ─────────────────────── */
   useEffect(() => {
@@ -141,7 +48,6 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
       setHostPickIdx(null);
       setSpectatorVotes({});
       setSubmitted(false);
-      setTimerKey(k => k + 1);
     });
 
     socket.on('answer_result', (data) => {
@@ -173,7 +79,6 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
       // Spectator: broadcast vote only
       socket.emit('spectator_pick', { roomCode, answerIndex: idx });
     }
-    // Host: just select — they must click "Lock Answer" to submit
   };
 
   /* ── Lock Answer (host only) ─────────── */
@@ -181,6 +86,12 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
     if (!isHost || submitted || selectedIdx === null || result) return;
     setSubmitted(true);
     socket.emit('submit_answer', { roomCode, answerIndex: selectedIdx });
+  };
+
+  /* ── Next Question (host only) ───────── */
+  const handleNextQuestion = () => {
+    if (!isHost || !result) return;
+    socket.emit('next_question', { roomCode });
   };
 
   /* ── Waiting screen ─────────────────── */
@@ -196,10 +107,7 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
     );
   }
 
-  const pct = (timeLeft / (question.timeLimit ?? 20)) * 100;
-  const isWarning = timeLeft <= 5;
-
-  /* ── Option style (reference image style) ── */
+  /* ── Option style ── */
   const getOptionStyle = (idx) => {
     const isSelected = selectedIdx === idx;
     const isHostPick = hostPickIdx === idx;
@@ -250,9 +158,9 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
 
     if (result) {
       if (idx === result.correctIndex)
-        return <span style={{ fontSize: '1rem', flexShrink: 0 }}>✅</span>;
+        return <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>✅</span>;
       if (idx === result.chosenIndex && !result.correct)
-        return <span style={{ fontSize: '1rem', flexShrink: 0 }}>❌</span>;
+        return <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>❌</span>;
       return (
         <div style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #2a2a2a', flexShrink: 0 }}/>
       );
@@ -271,7 +179,7 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
     );
   };
 
-  /* ── Spectator vote count chip (visible to host) ── */
+  /* ── Spectator vote count chip ── */
   const VoteCount = ({ idx }) => {
     if (!isHost || result) return null;
     const count = Object.values(spectatorVotes).filter(v => v === idx).length;
@@ -295,35 +203,20 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         borderBottom: '1px solid #1a1a1a', flexShrink: 0, gap: '1rem',
       }}>
-        {/* Round counter */}
         <span style={{ fontFamily: "'Nunito'", fontWeight: 900, fontSize: '0.85rem', color: '#4A9EFF', letterSpacing: 1 }}>
           ROUND {question.index} OF {question.total}
         </span>
-
-        {/* Category */}
         <span style={{ fontFamily: "'Nunito'", fontWeight: 800, fontSize: '0.75rem', color: '#555', letterSpacing: 1 }}>
           {question.category}
         </span>
-
-        {/* Timer + score */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontFamily: "'Nunito'", fontWeight: 900, fontSize: '0.85rem', color: isWarning ? '#FF6B6B' : '#888' }}>
-            {Math.ceil(timeLeft)}s
+          <span style={{ fontFamily: "'Nunito'", fontWeight: 900, fontSize: '0.85rem', color: '#888' }}>
+            ⏱ {timeString}
           </span>
           <span style={{ fontFamily: "'Nunito'", fontWeight: 900, fontSize: '0.85rem', color: '#ccc' }}>
             {teamScore} pts
           </span>
         </div>
-      </div>
-
-      {/* ── TIMER BAR ────────────────────────── */}
-      <div style={{ height: 3, background: '#1a1a1a', flexShrink: 0 }}>
-        <div style={{
-          height: '100%',
-          width: `${pct}%`,
-          background: isWarning ? '#FF6B6B' : '#4A9EFF',
-          transition: 'width 0.1s linear, background 0.3s',
-        }}/>
       </div>
 
       {/* ── MAIN CONTENT (centered) ──────────── */}
@@ -376,8 +269,29 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
             ))}
           </div>
 
-          {/* LOCK ANSWER — host only */}
-          {isHost && !result && (
+          {/* EXPLANATION / FEEDBACK (Shown only when result exists) */}
+          {result && (
+            <div style={{
+              background: '#111', border: `1px solid ${result.correct ? '#51CF66' : '#FF6B6B'}`,
+              borderRadius: 8, padding: '1rem 1.25rem',
+              animation: 'slideUp 0.3s ease-out', marginTop: '0.25rem'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <span style={{ color: result.correct ? '#51CF66' : '#FF6B6B', fontWeight: 900, fontSize: '0.9rem' }}>
+                  {result.correct ? 'Correct! ' : 'Wrong! '}
+                  <span style={{ color: '#666', fontSize: '0.8rem' }}>
+                    {result.correct ? `+${result.pointsEarned} pts` : `Correct answer was ${question.options[result.correctIndex]}`}
+                  </span>
+                </span>
+              </div>
+              <p style={{ margin: 0, color: '#aaa', fontSize: '0.85rem', lineHeight: 1.5, fontWeight: 700, fontFamily: "'Nunito'" }}>
+                {result.explanation}
+              </p>
+            </div>
+          )}
+
+          {/* ACTIONS / STATUS */}
+          {!result && isHost && (
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.25rem' }}>
               <button
                 onClick={handleLockAnswer}
@@ -398,7 +312,14 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
             </div>
           )}
 
-          {/* Spectator status */}
+          {result && isHost && (
+             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.25rem', animation: 'fadeIn 0.3s ease' }}>
+                <ChunkyButton color="#4A9EFF" onClick={handleNextQuestion} style={{ padding: '0.6rem 2rem', border: '2px solid #fff', fontSize: '0.85rem' }}>
+                  Next Question <ArrowRight size={16}/>
+                </ChunkyButton>
+             </div>
+          )}
+
           {!isHost && !result && (
             <div style={{ textAlign: 'center' }}>
               <span style={{ fontFamily: "'Nunito'", fontWeight: 800, fontSize: '0.78rem', color: '#444', letterSpacing: 1 }}>
@@ -407,6 +328,14 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
                   : 'Select your vote — host will lock the answer'}
               </span>
             </div>
+          )}
+
+          {!isHost && result && (
+             <div style={{ textAlign: 'center', marginTop: '0.5rem', animation: 'pulseHard 1.5s infinite' }}>
+                <span style={{ fontFamily: "'Nunito'", fontWeight: 800, fontSize: '0.78rem', color: '#555', letterSpacing: 1 }}>
+                  Waiting for host to continue (or 15s auto-skip)...
+                </span>
+             </div>
           )}
 
           {/* Players row */}
@@ -428,9 +357,6 @@ export default function QuizGame({ socket, roomCode, isHost, players }) {
           </div>
         </div>
       </div>
-
-      {/* ── ANSWER REVEAL OVERLAY ─────────── */}
-      {result && <AnswerReveal result={result} question={question}/>}
     </div>
   );
 }
