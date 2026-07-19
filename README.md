@@ -9,11 +9,13 @@ All players join the same room and play as a **team**. Everyone sees the same qu
 ## Features
 
 - 🎮 **Team Play** — One shared score for the whole room. Win or lose together.
-- 📂 **Category Select** — Host picks a specific category before the game starts.
-- ⏱️ **Timed Questions** — 20 seconds per question, server-enforced. No skipping.
+- 📂 **8 Categories** — Host picks a specific category before the game starts.
+- ⏱️ **Stopwatch Gameplay** — No timers when answering. Discuss as a team for as long as you want; final rankings are based on total time taken!
+- 🖼️ **Image Questions** — Support for visual-based questions displayed prominently as the main card.
+- 🎵 **Synthesized Sound Effects (SFX)** — Snappy, retro Web Audio SFX for button clicks, correct/wrong answers, and game over.
 - 🔒 **Host Locks Answer** — Only the host submits. Other players vote to influence the pick.
-- 💡 **Instant Reveals** — Correct answer + explanation shown after every question.
-- 📊 **Game Over Recap** — Full round-by-round breakdown with expandable explanations.
+- 🟢🔴 **Simple Border Reveals** — Visual feedback showing correct (green) and incorrect (red) choices directly on option borders.
+- 📊 **Simple Game Over Recap** — Full round-by-round breakdown with a minimal, dark theme.
 - 👁️ **Spectator Votes** — Non-host players select an option; their vote count is visible to the host.
 - 🔄 **Play Again** — Host can restart with the same room after a game ends.
 - 🖱️ **Custom Cursor** — HiveMind-style animated cursor throughout.
@@ -22,14 +24,18 @@ All players join the same room and play as a **team**. Everyone sees the same qu
 
 ## Question Bank
 
-40 total questions across 4 categories — 10 per category. One category is chosen per game session.
+350 total questions across 8 categories — 50 per category. 20 random questions are queued per game session.
 
 | Category | Count |
 |---|---|
-| 🎮 Video Games | 10 |
-| 📺 YouTube & Creators | 10 |
-| 🎬 Movies | 10 |
-| 📱 Top Web Series | 10 |
+| 🎮 Video Games | 50 |
+| 📺 YouTube & Creators | 50 |
+| 🎬 Movies | 50 |
+| 📱 Top Web Series | 50 |
+| 🏮 Anime & Manga | 50 |
+| 💻 Tech & Programming | 50 |
+| 🌐 Internet Culture | 50 |
+| 🧠 General Knowledge | 50 |
 
 ---
 
@@ -40,6 +46,7 @@ All players join the same room and play as a **team**. Everyone sees the same qu
 | Frontend | React 19 + Vite 8 |
 | Backend | Node.js + Express |
 | Real-time | Socket.io 4 |
+| Sound | Web Audio API (procedural SFX) |
 | Icons | Lucide React |
 | Styling | Vanilla CSS (dark theme) |
 | Fonts | Bungee + Nunito (Google Fonts) |
@@ -55,13 +62,20 @@ web-game-04/
 │   │   ├── UI.jsx              # Shared UI: AnimatedCursor, ChunkyButton, Landing, Lobby, Setup views
 │   │   ├── CategorySelect.jsx  # Category picker screen (host chooses, spectators wait)
 │   │   ├── QuizGame.jsx        # Main game screen: question + 2×2 options + Lock Answer
-│   │   └── GameOver.jsx        # Results screen with per-question recap
+│   │   └── GameOver.jsx        # Simple results screen with per-question recap
+│   ├── utils/
+│   │   └── sfx.js              # Synthesized procedural UI sound effects
 │   ├── App.jsx                 # Root: Socket.io setup + view routing
 │   ├── index.css               # Global dark theme + animations
 │   └── main.jsx
 ├── server/
-│   ├── index.js                # Socket.io game server: rooms, timers, scoring
-│   ├── questions.js            # 40-question bank across 4 categories
+│   ├── questions/              # Separate question modules
+│   │   ├── anime.js
+│   │   ├── gk.js
+│   │   ├── internet.js
+│   │   └── tech.js
+│   ├── index.js                # Socket.io game server: rooms, stopwatch, scoring
+│   ├── questions.js            # Main exporter combining all 350 questions
 │   └── package.json
 ├── vite.config.js              # Vite config with Socket.io proxy
 └── package.json                # Root: concurrently script runs client + server
@@ -103,13 +117,6 @@ Starts both services via `concurrently`:
 
 The Vite dev server automatically proxies `/socket.io` requests to port 3001, so you don't need to configure CORS or origins in development.
 
-### Run separately (optional)
-
-```bash
-npm run dev:client   # Vite only
-npm run dev:server   # Node server only
-```
-
 ---
 
 ## How to Play
@@ -118,12 +125,13 @@ npm run dev:server   # Node server only
 2. **Players** click **Join Game**, enter the 4-letter room code and their name.
 3. Once everyone is in, the **host clicks Start Game**.
 4. All players are taken to the **category select screen** — host picks one category.
-5. Each question appears on screen for everyone simultaneously:
+5. Each question appears on screen for everyone simultaneously (with image questions displayed prominently).
    - **Host** — selects an option, then clicks **Lock Answer** to submit.
    - **Spectators** — click any option to cast a vote (visible to host as a count). Cannot submit.
-6. After the host locks in an answer (or time runs out), the **correct answer and explanation** are shown.
-7. After all questions, the **Game Over** screen shows the team score, accuracy, and a full recap.
-8. Host can click **Play Again** to restart with the same room.
+6. After the host locks in an answer, the **option borders light up** (green for correct, red for incorrect). 
+7. Host can advance manually, or the game auto-advances to the next question after 15 seconds.
+8. After 20 questions, the **Game Over** screen shows the team score, accuracy, total time taken, and a clean recap of the questions.
+9. Host can click **Play Again** to restart with the same room.
 
 ---
 
@@ -135,18 +143,18 @@ Landing → Host / Join Setup → Lobby
                      Host clicks "Start Game"
                                  ↓
                        Category Select Screen
-                    (Host picks: Games / YouTube / Movies / Series)
+                 (Host picks one of 8 categories)
                                  ↓
-                       Quiz (10 questions, 20s each)
+                       Quiz (20 questions, stopwatch)
                      ┌──────────────────────────────┐
-                     │  ROUND X OF 10               │
-                     │  [Question card]             │
+                     │  ROUND X OF 20               │
+                     │  [Image or Question card]    │
                      │  ○ Option A   ○ Option B     │
                      │  ○ Option C   ○ Option D     │
                      │       [ Lock Answer ]        │  ← host only
                      └──────────────────────────────┘
                                  ↓
-                          Game Over + Recap
+                        Simple Game Over Recap
 ```
 
 ---

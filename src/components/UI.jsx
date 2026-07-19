@@ -142,25 +142,25 @@ export function LandingView({ onHost, onJoin }) {
 
   const HOW_STEPS = [
     { icon: <Gamepad2 size={28}/>, title: 'Create or Join', desc: 'Host a room or enter a 4-letter code to join your team.', color: '#4A9EFF' },
-    { icon: <Users size={28}/>, title: 'Pick a Category', desc: 'Host chooses a quiz category: Games, YouTube, Movies or Series.', color: '#51CF66' },
-    { icon: <Target size={28}/>, title: 'Host Answers', desc: 'Everyone sees the question. Only the host selects and locks the answer.', color: '#FFD43B' },
+    { icon: <Users size={28}/>, title: 'Pick a Category', desc: 'Host chooses from 8 categories: Games, Anime, Tech, Internet, GK, and more.', color: '#51CF66' },
+    { icon: <Target size={28}/>, title: 'Host Answers', desc: 'Discuss together, but only the host locks in the final answer.', color: '#FFD43B' },
     { icon: <Trophy size={28}/>, title: 'Score Together', desc: 'One shared team score. Win or lose as a crew.', color: '#FF6B6B' },
   ];
 
   const FEATURES = [
-    { icon: <Clock size={22}/>, title: 'Timed Questions', desc: '20 seconds per question. No skip. Think fast.', color: '#4A9EFF' },
+    { icon: <Clock size={22}/>, title: 'Stopwatch Gameplay', desc: 'Unlimited time to answer. Your final score is ranked by total time taken.', color: '#4A9EFF' },
     { icon: <Shield size={22}/>, title: 'Team Play', desc: 'One score for everyone. Spectators can vote to guide the host.', color: '#FF6B6B' },
-    { icon: <Cpu size={22}/>, title: '40 Questions', desc: 'Four categories — 10 questions each. More added regularly.', color: '#CC5DE8' },
-    { icon: <Zap size={22}/>, title: 'Instant Reveals', desc: 'Answer + explanation shown after every question.', color: '#FFD43B' },
-    { icon: <Users size={22}/>, title: 'Up to 8 Players', desc: 'Pack the lobby. Works great on any screen.', color: '#51CF66' },
+    { icon: <Cpu size={22}/>, title: '350+ Questions', desc: '8 categories — 50 questions each. Shuffled randomly per game.', color: '#CC5DE8' },
+    { icon: <Zap size={22}/>, title: 'Clean Border Reveals', desc: 'Correct/wrong status marked instantly via beautiful border colors.', color: '#FFD43B' },
+    { icon: <Users size={22}/>, title: 'Sound Effects (SFX)', desc: 'Satisfying, procedurally synthesized UI audio feedback.', color: '#51CF66' },
     { icon: <Globe size={22}/>, title: 'No Download', desc: 'Browser-only. Share the link and play.', color: '#FF922B' },
   ];
 
   const STATS = [
     { value: '8', label: 'MAX PLAYERS' },
-    { value: '40', label: 'QUESTIONS' },
-    { value: '4', label: 'CATEGORIES' },
-    { value: '20s', label: 'PER QUESTION' },
+    { value: '350+', label: 'QUESTIONS' },
+    { value: '8', label: 'CATEGORIES' },
+    { value: 'Stopwatch', label: 'GAME TIMER' },
   ];
 
   const CATEGORIES = [
@@ -168,6 +168,10 @@ export function LandingView({ onHost, onJoin }) {
     { emoji: '📺', label: 'YouTube' },
     { emoji: '🎬', label: 'Movies' },
     { emoji: '📱', label: 'Web Series' },
+    { emoji: '🏮', label: 'Anime & Manga' },
+    { emoji: '💻', label: 'Tech & Programming' },
+    { emoji: '🌐', label: 'Internet Culture' },
+    { emoji: '🧠', label: 'General Knowledge' },
   ];
 
   return (
