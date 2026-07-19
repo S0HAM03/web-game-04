@@ -8,10 +8,10 @@ export function PageContent({ pageId }) {
         <div style={{ textAlign: 'left', color: '#ccc', lineHeight: 1.8, fontFamily: "'Nunito', sans-serif" }}>
           <h2 style={{ color: '#fff', marginBottom: '1rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.5rem' }}>About QuizMania</h2>
           <p>Welcome to QuizMania! We are a dedicated platform for free, high-quality multiplayer team web games.</p>
-          <p>Founded by passionate developers, our mission is to provide an accessible, cooperative, and entertaining trivia experience for players worldwide. Unlike standard competitive trivia games, QuizMania emphasizes teamwork: players discuss and vote on questions together, and the host locks in the final answer.</p>
-          <h3 style={{ color: '#fff', marginTop: '1.5rem', fontFamily: "'Bungee', sans-serif', fontSize: '1.1rem" }}>Our Cooperative Vision</h3>
+          <p>Created by developer **Soham Gadekar**, our mission is to provide an accessible, cooperative, and entertaining trivia experience for players worldwide. Unlike standard competitive trivia games, QuizMania emphasizes teamwork: players discuss and vote on questions together, and the host locks in the final answer.</p>
+          <h3 style={{ color: '#fff', marginTop: '1.5rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.1rem' }}>Our Cooperative Vision</h3>
           <p>We believe in the power of gaming to bring people together. That's why all game modes on QuizMania are completely free-to-play, requiring no downloads or installations.</p>
-          <p>If you have any questions or feedback, please feel free to reach out via our Contact Us page.</p>
+          <p>If you have any questions or feedback, please feel free to reach out via our Contact Us page or email us at **sohamgadekar3@gmail.com**.</p>
         </div>
       );
     case 'privacy-policy':
@@ -19,7 +19,7 @@ export function PageContent({ pageId }) {
         <div style={{ textAlign: 'left', color: '#ccc', lineHeight: 1.8, fontFamily: "'Nunito', sans-serif" }}>
           <h2 style={{ color: '#fff', marginBottom: '1rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.5rem' }}>Privacy Policy</h2>
           <p style={{ fontSize: '0.8rem', color: '#666' }}>Effective Date: {new Date().toLocaleDateString()}</p>
-          <p>At QuizMania, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal data when you use our services.</p>
+          <p>At QuizMania, operated by **Soham Gadekar** (contact: **sohamgadekar3@gmail.com**), we take your privacy seriously. This policy outlines how we collect, use, and protect your personal data when you use our services.</p>
           <h3 style={{ color: '#fff', marginTop: '1.5rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.1rem' }}>1. Information We Collect</h3>
           <p>We may collect information such as your nickname (for game lobbies), IP address, browser type, and interactions with our games to improve your experience and manage game socket connections.</p>
           <h3 style={{ color: '#fff', marginTop: '1.5rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.1rem' }}>2. Google AdSense & Third-Party Cookies</h3>
@@ -35,8 +35,8 @@ export function PageContent({ pageId }) {
       return (
         <div style={{ textAlign: 'left', color: '#ccc', lineHeight: 1.8, fontFamily: "'Nunito', sans-serif" }}>
           <h2 style={{ color: '#fff', marginBottom: '1rem', fontFamily: "'Bungee', sans-serif", fontSize: '1.5rem', textTransform: 'capitalize' }}>{pageId.replace(/-/g, ' ')}</h2>
-          <p>QuizMania is an independent game development studio project.</p>
-          <p>All content, including games, artwork, sound engines, and code, is the property of QuizMania unless otherwise stated.</p>
+          <p>QuizMania is an independent game development studio project created and operated by **Soham Gadekar**.</p>
+          <p>All content, including games, artwork, sound engines, and code, is the property of Soham Gadekar unless otherwise stated.</p>
           <p>Disclaimer: Question databases and categories (e.g., Anime & Manga, Movies, Video Games) reference copyrighted titles for educational trivia purposes under fair use guidelines.</p>
         </div>
       );
@@ -44,6 +44,9 @@ export function PageContent({ pageId }) {
       return (
         <div style={{ textAlign: 'left', color: '#ccc', width: '100%', maxWidth: '500px', fontFamily: "'Nunito', sans-serif" }}>
           <h2 style={{ color: '#fff', marginBottom: '1.5rem', textAlign: 'center', fontFamily: "'Bungee', sans-serif", fontSize: '1.5rem' }}>Contact Us</h2>
+          <p style={{ textAlign: 'center', color: '#888', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
+            Have feedback or an issue? Contact me directly at **sohamgadekar3@gmail.com** or fill out the form below.
+          </p>
           <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <input type="text" placeholder="Your Name" style={{ padding: '12px', background: '#161616', border: '1px solid #2a2a2a', color: '#fff', borderRadius: '8px', outline: 'none', fontFamily: 'inherit' }} />
             <input type="email" placeholder="Your Email" style={{ padding: '12px', background: '#161616', border: '1px solid #2a2a2a', color: '#fff', borderRadius: '8px', outline: 'none', fontFamily: 'inherit' }} />
